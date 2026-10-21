@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { @apply scroll-smooth; scroll-padding-top: 6rem; }
+  body { @apply bg-canvas text-brand-ink transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100; }
+  section { @apply min-h-screen px-[5%] pb-8 pt-28 md:px-[9%]; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-white dark:ring-offset-slate-900; }
+  ::selection { @apply bg-brand text-white; }
+  ::-webkit-scrollbar { width: 12px; }
+  ::-webkit-scrollbar-thumb { @apply rounded-full bg-brand; }
+}
+
+@layer components {
+  .intro-screen { @apply fixed inset-0 z-[1300] grid place-items-center overflow-hidden bg-slate-950 text-white transition-opacity duration-700; }
+  .intro-screen.is-leaving { @apply pointer-events-none opacity-0; }
+  .intro-mark { @apply relative grid h-40 w-40 place-items-center; }
+  .intro-monogram { @apply absolute h-64 w-64 object-contain opacity-0; animation: monogram-form 2.6s ease both; }
+  .intro-butterfly { @apply absolute h-20 w-24 drop-shadow-[0_0_18px_rgba(25,118,210,0.7)]; animation: butterfly-journey 2.6s cubic-bezier(.45,0,.2,1) both; }
+  .intro-butterfly-two { animation-name: butterfly-journey-two; animation-delay: .12s; }
+  .butterfly-left-wing { transform-box: fill-box; transform-origin: right center; animation: butterfly-flap .2s ease-in-out infinite alternate; }
+  .butterfly-right-wing { transform-box: fill-box; transform-origin: left center; animation: butterfly-flap .2s ease-in-out infinite alternate-reverse; }
+  .intro-caption { @apply absolute top-[calc(100%+1.5rem)] whitespace-nowrap text-xs font-medium tracking-[.35em] text-brand-light; animation: caption-in .55s ease .8s both; }
+  .section-title { @apply mb-10 text-center text-4xl font-semibold text-brand-ink dark:text-white md:text-5xl; }
+  .section-title span { @apply text-brand dark:text-brand-light; }
+  .btn-primary { @apply inline-flex items-center justify-center rounded-full bg-brand px-7 py-3 text-base font-semibold tracking-wide text-white transition duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-brand/30; }
+  .btn-secondary { @apply inline-flex items-center justify-center rounded-full border-2 border-brand px-7 py-3 text-base font-semibold text-brand transition duration-300 hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light dark:hover:text-slate-950; }
+  .card { @apply rounded-2xl bg-white p-6 shadow-lg shadow-brand/10 transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:bg-slate-800 dark:shadow-black/20; }
+  .reveal { @apply translate-y-8 opacity-0 transition duration-700 ease-out; transition-delay: calc(var(--i, 0) * 90ms); }
+  .reveal.is-visible { @apply translate-y-0 opacity-100; }
+  .reveal-left { @apply -translate-x-8 translate-y-0; }
+  .reveal-right { @apply translate-x-8 translate-y-0; }
+  .reveal-zoom { @apply translate-y-0 scale-95; }
+  .reveal-left.is-visible, .reveal-right.is-visible { @apply translate-x-0; }
+  .reveal-zoom.is-visible { @apply scale-100; }
+  .skill-fill { width: 0; transition: width 900ms cubic-bezier(.22,1,.36,1); }
+  .is-visible .skill-fill { width: var(--level); }
+  .project-card[hidden] { display: none; }
+  .filter-btn { @apply rounded-full border border-brand px-5 py-2 text-sm font-medium text-brand transition hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light; }
+  .filter-btn.active { @apply bg-brand text-white dark:bg-brand-light dark:text-slate-950; }
+  .nav-link { @apply border-b-2 border-transparent py-2 text-base font-medium transition hover:border-brand hover:text-brand dark:hover:text-brand-light; }
+  .nav-link.active { @apply border-brand text-brand dark:text-brand-light; }
+}
+
+@keyframes butterfly-journey {
+  0% { opacity: 0; transform: translate(-170px, 90px) scale(.55) rotate(-28deg); }
+  18% { opacity: 1; transform: translate(-85px, 35px) scale(.8) rotate(14deg); }
+  38% { opacity: 1; transform: translate(0, 0) scale(1) rotate(-8deg); }
+  50% { opacity: 1; transform: translate(18px, -5px) scale(.88) rotate(10deg); }
+  66% { opacity: 1; transform: translate(58px, -48px) scale(.82) rotate(30deg); }
+  100% { opacity: 0; transform: translate(210px, -150px) scale(.35) rotate(62deg); }
+}
+@keyframes butterfly-journey-two {
+  0% { opacity: 0; transform: translate(170px, -90px) scale(.55) rotate(28deg); }
+  18% { opacity: 1; transform: translate(85px, -35px) scale(.8) rotate(-14deg); }
+  38% { opacity: 1; transform: translate(0, 0) scale(.9) rotate(8deg); }
+  50% { opacity: 1; transform: translate(-18px, 5px) scale(.82) rotate(-10deg); }
+  66% { opacity: 1; transform: translate(-58px, 48px) scale(.76) rotate(-30deg); }
+  100% { opacity: 0; transform: translate(-210px, 150px) scale(.35) rotate(-62deg); }
+}
+@keyframes monogram-form {
+  0%, 24% { opacity: 0; transform: scale(.55); filter: brightness(1.5) saturate(1.8) blur(8px) drop-shadow(0 0 14px #64b5f6); }
+  45% { opacity: 1; transform: scale(1.12); filter: brightness(1.8) saturate(2) drop-shadow(0 0 8px #eaf5ff) drop-shadow(0 0 22px #64b5f6) drop-shadow(0 0 48px #1976d2); }
+  58%, 85% { opacity: 1; transform: scale(1); filter: brightness(1.8) saturate(2) drop-shadow(0 0 8px #eaf5ff) drop-shadow(0 0 22px #64b5f6) drop-shadow(0 0 48px #1976d2); }
+  100% { opacity: 0; transform: scale(1.25); filter: brightness(1.5) saturate(1.8) blur(3px) drop-shadow(0 0 28px #1976d2); }
+}
+@keyframes butterfly-flap { from { transform: scaleX(.72) rotate(-5deg); } to { transform: scaleX(1) rotate(5deg); } }
+@keyframes caption-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes border-morph {
+  0%,100% { border-radius: 51% 49% 48% 52% / 49% 49% 51% 51%; }
+  35% { border-radius: 60% 40% 57% 43% / 40% 54% 46% 60%; }
+  65% { border-radius: 67% 33% 68% 32% / 27% 70% 30% 73%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .intro-screen { display: none !important; }
+}
