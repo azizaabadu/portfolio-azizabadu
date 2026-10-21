@@ -28,10 +28,11 @@ UPDATE projects
 SET sort_order = CASE slug
   WHEN 'aplikasi-input-biodata' THEN 4
   WHEN 'aplikasi-kalkulator' THEN 5
-  WHEN 'rancangan-ui-ux-figma' THEN 6
   ELSE sort_order
 END
-WHERE slug IN ('aplikasi-input-biodata', 'aplikasi-kalkulator', 'rancangan-ui-ux-figma');
+WHERE slug IN ('aplikasi-input-biodata', 'aplikasi-kalkulator');
+
+DELETE FROM projects WHERE slug = 'rancangan-ui-ux-figma';
 
 -- Add or refresh the PHP, MySQL, and Tailwind inventory and sales project.
 INSERT INTO projects (

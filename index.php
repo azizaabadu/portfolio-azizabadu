@@ -24,13 +24,12 @@ $projects = [
     ['title'=>'Desain Website Rizky Store di Figma','description'=>'Desain UI/UX di Figma untuk website Rizky Store, toko peralatan rumah tangga di Larantuka. Rancangan ini dibuat sebagai tahap awal sebelum rencana implementasi menggunakan WordPress. Desain mencakup navigasi Beranda, Produk, Kontak, dan Admin; hero promosi katalog; tombol kontak WhatsApp; serta informasi lokasi toko. Proyek saat ini masih berupa desain Figma dan belum diimplementasikan menjadi website WordPress.','image'=>'rizky-store-figma.png','category'=>'design','tech_stack'=>'Figma','github_url'=>'','demo_url'=>'','figma_url'=>'https://www.figma.com/design/rKcY8SvGhi7Zhzrb6ebyzG/Untitled?node-id=0-1&t=W7voMhDXMGZiaH3D-1'],
     ['title'=>'Aplikasi Input Biodata','description'=>'Aplikasi Java untuk menerima dan menampilkan data biodata.','image'=>'3-2.png','category'=>'java','tech_stack'=>'Java','github_url'=>'','demo_url'=>''],
     ['title'=>'Aplikasi Kalkulator','description'=>'Kalkulator sederhana untuk operasi aritmetika dasar.','image'=>'4-2.png','category'=>'java','tech_stack'=>'Java','github_url'=>'','demo_url'=>''],
-    ['title'=>'Rancangan UI/UX di Figma','description'=>'Rancangan antarmuka yang disusun di Figma sebagai dasar pengalaman pengguna.','image'=>'byfigma.png','category'=>'design','tech_stack'=>'Figma','github_url'=>'','demo_url'=>'']
 ];
 $socialLinks = [
     ['platform'=>'GitHub','url'=>'https://github.com/azizaabadu','icon_class'=>'fa-brands fa-github'],
     ['platform'=>'X','url'=>'https://x.com/AzhinanN55825','icon_class'=>'fa-brands fa-x-twitter'],
     ['platform'=>'Instagram','url'=>'https://www.instagram.com/azizaabadu/','icon_class'=>'fa-brands fa-instagram'],
-    ['platform'=>'LinkedIn','url'=>'','icon_class'=>'fa-brands fa-linkedin']
+    ['platform'=>'LinkedIn','url'=>'https://www.linkedin.com/in/aziza-ony-badu-968a1240b/','icon_class'=>'fa-brands fa-linkedin']
 ];
 $db = null;
 try {
@@ -46,6 +45,18 @@ try {
 }
 // The portfolio serves the uploaded PDF directly; ignore older Canva links stored in the profile row.
 $profile['cv_url'] = 'assets/cv/cv-aziza-badu.pdf';
+$linkedinUrl = 'https://www.linkedin.com/in/aziza-ony-badu-968a1240b/';
+$linkedinFound = false;
+foreach ($socialLinks as &$social) {
+    if (strtolower((string)($social['platform'] ?? '')) === 'linkedin') {
+        $social['url'] = $linkedinUrl;
+        $social['icon_class'] = 'fa-brands fa-linkedin';
+        $linkedinFound = true;
+        break;
+    }
+}
+unset($social);
+if (!$linkedinFound) $socialLinks[] = ['platform'=>'LinkedIn','url'=>$linkedinUrl,'icon_class'=>'fa-brands fa-linkedin'];
 $socialLinks = array_values(array_filter($socialLinks, static fn(array $social): bool => trim((string)($social['url'] ?? '')) !== ''));
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_form'])) {
