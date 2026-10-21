@@ -110,6 +110,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
   <meta property="og:title" content="Aziza Ony Badu | Portofolio">
   <meta property="og:description" content="Siswa PPLG yang belajar pengembangan web full stack dan terbuka untuk kesempatan magang.">
   <meta property="og:type" content="website">
+  <meta name="google-site-verification" content="Cg3aC95gry83m4ZUYeS8A4jDUnuiUtuEiWmFGH560nc">
   <link rel="stylesheet" href="assets/css/output.css?v=20261021-intro4">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
