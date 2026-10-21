@@ -6,6 +6,7 @@
     }
   },
   "routes": [
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "buildCommand": "npm run build && node -e \"const fs = require('node:fs'); fs.rmSync('public', { recursive: true, force: true }); fs.mkdirSync('public', { recursive: true }); fs.cpSync('assets', 'public/assets', { recursive: true });\"",
