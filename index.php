@@ -233,8 +233,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
           <p class="mb-7 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">Saya terbuka untuk proyek website, sistem web, dan kolaborasi jangka panjang. Respons biasanya dalam 24 jam.</p>
           <div class="grid gap-4">
             <?php if ($contactEmail !== '' && filter_var($contactEmail, FILTER_VALIDATE_EMAIL)): ?><a href="mailto:<?= e($contactEmail) ?>" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="min-w-0"><span class="block text-sm text-slate-500 dark:text-slate-400">Email</span><span class="break-all font-semibold text-brand-ink dark:text-white"><?= e($contactEmail) ?></span></span></a><?php endif; ?>
-            <?php if ($contactPhone !== ''): ?><a href="https://wa.me/<?= e($contactPhone) ?>" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span><span><span class="block text-sm text-slate-500 dark:text-slate-400">WhatsApp</span><span class="font-semibold text-brand-ink dark:text-white">Chat langsung</span></span></a>
-            <?php elseif ($instagram): ?><a href="<?= e($instagram['url']) ?>" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-brands fa-instagram" aria-hidden="true"></i></span><span><span class="block text-sm text-slate-500 dark:text-slate-400">Instagram</span><span class="font-semibold text-brand-ink dark:text-white">Kirim pesan lewat DM</span></span></a><?php endif; ?>
+            <a href="https://wa.me/6282144725785" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span><span><span class="block text-sm text-slate-500 dark:text-slate-400">WhatsApp</span><span class="font-semibold text-brand-ink dark:text-white">Chat langsung</span></span></a>
           </div>
         </div>
         <form action="https://formspree.io/f/mgaawjbb" method="post" class="grid gap-1 rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-brand/10 sm:p-8 dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-black/20" novalidate>
@@ -251,5 +250,36 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
   <footer class="bg-white px-[5%] py-8 text-center dark:bg-slate-900"><div class="mb-5 flex justify-center gap-4"><?php foreach ($socialLinks as $social): ?><a class="grid h-10 w-10 place-items-center rounded-full border border-brand text-brand transition hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi <?= e($social['platform']) ?>"><i class="<?= e($social['icon_class']) ?>" aria-hidden="true"></i></a><?php endforeach; ?></div><p class="text-sm text-slate-600 dark:text-slate-400">&copy; <?= date('Y') ?> Aziza Ony Badu · Hak cipta dilindungi.</p></footer>
   <a href="#home" id="back-to-top" class="fixed bottom-5 right-5 z-40 hidden h-12 w-12 place-items-center rounded-full bg-brand text-white shadow-lg transition hover:-translate-y-1" aria-label="Kembali ke atas"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
   <script src="assets/js/app.js?v=20261021-intro1" defer></script>
+  <script>
+    document.querySelectorAll('form[action="https://formspree.io/f/mgaawjbb"]').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        let notice = form.querySelector('[data-form-notice]');
+        if (!notice) {
+          notice = document.createElement('p');
+          notice.setAttribute('data-form-notice', '');
+          notice.setAttribute('role', 'status');
+          notice.setAttribute('aria-live', 'polite');
+          notice.className = 'mt-4 rounded-2xl bg-green-100 px-5 py-4 font-semibold text-green-900 dark:bg-green-900/40 dark:text-green-100';
+          form.appendChild(notice);
+        }
+        notice.textContent = 'Mengirim pesan…';
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' }
+          });
+          if (!response.ok) throw new Error('Submission failed');
+          notice.textContent = 'Pesan berhasil dikirim. Terima kasih sudah menghubungi saya!';
+          form.reset();
+        } catch (error) {
+          notice.className = 'mt-4 rounded-2xl bg-red-100 px-5 py-4 font-semibold text-red-900 dark:bg-red-900/40 dark:text-red-100';
+          notice.textContent = 'Pesan belum berhasil dikirim. Silakan coba lagi.';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
