@@ -38,6 +38,10 @@ $projects = [
     ['title'=>'Aplikasi Kalkulator','description'=>'Kalkulator sederhana untuk operasi aritmetika dasar.','image'=>'4-2.png','category'=>'java','tech_stack'=>'Java','github_url'=>'','demo_url'=>''],
 ];
 $socialLinks = $portfolioConfig['social'];
+$canonicalHost = preg_replace('/[^a-zA-Z0-9.-]/', '', (string)($_SERVER['HTTP_HOST'] ?? ''));
+$canonicalPath = strtok((string)($_SERVER['REQUEST_URI'] ?? '/'), '?') ?: '/';
+$canonicalBase = $canonicalHost ? (($isHttps ? 'https://' : 'http://') . $canonicalHost) : '';
+$canonicalUrl = $canonicalBase . $canonicalPath;
 $db = null;
 try {
     $db = portfolio_db();
@@ -118,19 +122,21 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
 <html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portofolio Aziza Ony Badu, siswa PPLG MAKN Ende yang mencari kesempatan magang pengembangan web.">
+  <meta name="description" content="Web developer dari Ende, NTT yang membantu UMKM dan bisnis kecil membangun website dan sistem web. Konsultasi awal gratis.">
   <meta name="theme-color" content="#ffffff">
-  <meta property="og:title" content="Aziza Ony Badu | Portofolio">
-  <meta property="og:description" content="Siswa PPLG yang belajar pengembangan web full stack dan terbuka untuk kesempatan magang.">
+  <meta property="og:title" content="Aziza Ony Badu | Web Developer &amp; UI/UX Designer">
+  <meta property="og:description" content="Web developer dari Ende, NTT yang membantu UMKM dan bisnis kecil membangun website dan sistem web. Konsultasi awal gratis.">
   <meta property="og:type" content="website">
+  <?php if ($canonicalBase): ?><link rel="canonical" href="<?= e($canonicalUrl) ?>"><meta property="og:url" content="<?= e($canonicalUrl) ?>"><meta property="og:image" content="<?= e($canonicalBase . '/assets/images/' . basename((string)($profile['photo'] ?? 'zaza.png'))) ?>"><?php endif; ?>
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="google-site-verification" content="Cg3aC95gry83m4ZUYeS8A4jDUnuiUtuEiWmFGH560nc">
   <link rel="stylesheet" href="assets/css/output.css?v=20261024-portfolio-layout">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/images/aziza-logo.png" type="image/png">
+  <link rel="icon" href="assets/images/favicon-portfAB-removebg-preview.png" type="image/png">
   <script>try{if(localStorage.getItem('aziza-theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>
-  <title>Aziza Ony Badu | Portofolio</title>
+  <title>Aziza Ony Badu | Web Developer &amp; UI/UX Designer</title>
 </head>
 <body class="overflow-x-hidden bg-canvas font-sans text-brand-ink transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100">
   <div id="intro-screen" class="intro-screen" style="position:fixed;inset:0;z-index:1300;background:#020617" aria-hidden="true">
@@ -163,7 +169,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
   </div>
   <div class="scroll-progress fixed inset-x-0 top-0 z-[1200] h-[3px] w-0 bg-gradient-to-r from-brand to-brand-light" aria-hidden="true"></div>
   <header id="site-header" class="fixed inset-x-0 top-4 z-50 mx-auto flex w-[calc(100%-2rem)] max-w-5xl items-center justify-between gap-3 rounded-full border border-slate-200 bg-white/90 px-4 py-2 shadow-lg shadow-blue-900/5 backdrop-blur-md transition-shadow duration-200 dark:border-slate-800 dark:bg-slate-900/90 sm:px-6">
-    <a href="#home" class="flex shrink-0 items-center" aria-label="Aziza Badu, ke beranda"><img src="assets/images/aziza-logo.png" alt="Logo monogram Aziza Badu" width="56" height="56" class="h-12 w-12 object-contain"></a>
+    <a href="#home" class="flex shrink-0 items-center" aria-label="Aziza Badu, ke beranda"><img src="assets/images/favicon-portfAB-removebg-preview.png" alt="Logo monogram Aziza Badu" width="56" height="56" class="h-12 w-12 object-contain"></a>
     <nav id="site-nav" class="absolute inset-x-0 top-[calc(100%+0.75rem)] hidden flex-col gap-2 rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-xl shadow-blue-900/5 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95 lg:static lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-center lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none dark:lg:bg-transparent" aria-label="Navigasi utama">
       <a class="nav-link" href="#home">Beranda</a><a class="nav-link" href="#layanan">Layanan</a><a class="nav-link" href="#portfolio">Portofolio</a><a class="nav-link" href="#about">Tentang</a>
       <a href="#kontak" class="mobile-contact-link btn-primary mt-2 w-full lg:hidden">Konsultasi</a>
@@ -311,7 +317,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       </div>
     </section>
   </main>
-  <footer class="bg-white px-[5%] py-8 text-center dark:bg-slate-900"><div class="mb-5 flex justify-center gap-4"><?php foreach ($socialLinks as $social): ?><a class="grid h-10 w-10 place-items-center rounded-full border border-brand text-brand transition hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi <?= e($social['platform']) ?>"><i class="<?= e($social['icon_class']) ?>" aria-hidden="true"></i></a><?php endforeach; ?></div><p class="text-sm text-slate-600 dark:text-slate-400">&copy; <?= date('Y') ?> Aziza Ony Badu · Hak cipta dilindungi.</p></footer>
+  <footer class="bg-white px-4 py-8 pb-24 text-center dark:bg-slate-900"><p class="mb-4 font-semibold">Aziza Ony Badu</p><p class="mb-5 text-sm text-slate-600 dark:text-slate-400">Web developer dari Ende, NTT · Membantu bisnis kecil berkembang dengan teknologi.</p><div class="mb-5 flex justify-center gap-4"><?php foreach ($socialLinks as $social): ?><a class="grid h-10 w-10 place-items-center rounded-full border border-brand text-brand transition hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi <?= e($social['platform']) ?>"><i class="<?= e($social['icon_class']) ?>" aria-hidden="true"></i></a><?php endforeach; ?></div><p class="text-sm text-slate-600 dark:text-slate-400">&copy; 2026 Aziza Ony Badu</p></footer>
   <a href="#home" id="back-to-top" class="fixed bottom-5 right-5 z-40 hidden h-12 w-12 place-items-center rounded-full bg-brand text-white shadow-lg transition hover:-translate-y-1" aria-label="Kembali ke atas"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
   <script src="assets/js/app.js?v=20261024-client-refresh" defer></script>
 </body>
