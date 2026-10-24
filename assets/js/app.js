@@ -119,7 +119,7 @@
     document.querySelector('#project-modal-role').textContent = project.dataset.role || '';
     document.querySelector('#project-modal-problem').textContent = project.dataset.problem || '';
     document.querySelector('#project-modal-solution').textContent = project.dataset.solution || '';
-    document.querySelector('#project-modal-result').textContent = project.dataset.result?.trim() || 'Hasil dan dampak proyek ini belum didokumentasikan.';
+    document.querySelector('#project-modal-result').textContent = project.dataset.result?.trim() || '[ISI HASIL NYATA, mis. dampak bagi pemilik toko]';
     document.querySelector('#project-modal-category').textContent = project.dataset.categoryLabel || '';
     const image = document.querySelector('#project-modal-image');
     image.src = project.dataset.image || '';
@@ -172,41 +172,6 @@
       group.hidden = ![...group.querySelectorAll('.project-card')].some(project => !project.hidden);
     });
   }));
-
-  const contactForm = document.querySelector('#contact-form');
-  const contactStatus = document.querySelector('#contact-form-status');
-  contactForm?.addEventListener('submit', async event => {
-    event.preventDefault();
-    if (!contactForm.reportValidity()) return;
-    const submitButton = contactForm.querySelector('[type="submit"]');
-    if (submitButton) submitButton.disabled = true;
-    contactForm.setAttribute('aria-busy', 'true');
-    if (contactStatus) {
-      contactStatus.className = 'rounded-2xl bg-blue-100 px-5 py-4 text-sm font-semibold text-blue-900 dark:bg-blue-900/40 dark:text-blue-100';
-      contactStatus.textContent = 'Mengirim pesan…';
-    }
-    try {
-      const response = await fetch(contactForm.action, {
-        method: 'POST',
-        body: new FormData(contactForm),
-        headers: { Accept: 'application/json' }
-      });
-      if (!response.ok) throw new Error('Form submission failed');
-      if (contactStatus) {
-        contactStatus.className = 'rounded-2xl bg-emerald-100 px-5 py-4 text-sm font-semibold text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100';
-        contactStatus.textContent = 'Pesan berhasil dikirim. Terima kasih sudah menghubungi saya!';
-      }
-      contactForm.reset();
-    } catch {
-      if (contactStatus) {
-        contactStatus.className = 'rounded-2xl bg-red-100 px-5 py-4 text-sm font-semibold text-red-900 dark:bg-red-900/40 dark:text-red-100';
-        contactStatus.textContent = 'Pesan belum berhasil dikirim. Silakan coba lagi.';
-      }
-    } finally {
-      if (submitButton) submitButton.disabled = false;
-      contactForm.removeAttribute('aria-busy');
-    }
-  });
 
   const roles = ['Web Developer', 'UI/UX Designer', 'Pembuat Sistem Kasir & Stok'];
   const role = document.querySelector('.typed-role');
