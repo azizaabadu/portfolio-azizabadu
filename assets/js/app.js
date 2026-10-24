@@ -20,8 +20,10 @@
   const sections = [...document.querySelectorAll('main section[id]')];
 
   const closeMenu = () => {
-    nav?.classList.add('hidden');
-    nav?.classList.remove('flex');
+    if (innerWidth < 1024) {
+      nav?.classList.add('hidden');
+      nav?.classList.remove('flex');
+    }
     menuButton?.setAttribute('aria-expanded', 'false');
     menuButton?.setAttribute('aria-label', 'Buka menu');
     if (menuButton) menuButton.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
@@ -36,12 +38,16 @@
   });
   navLinks.forEach(link => link.addEventListener('click', closeMenu));
   nav?.querySelector('.mobile-contact-link')?.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+  document.addEventListener('pointerdown', event => {
+    if (menuButton?.getAttribute('aria-expanded') === 'true' && !nav?.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
+  });
 
   const updateScroll = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
     if (progress) progress.style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
-    header?.classList.toggle('shadow-sm', scrollY > 8);
-    header?.classList.toggle('shadow-none', scrollY <= 8);
+    header?.classList.toggle('shadow-xl', scrollY > 20);
+    header?.classList.toggle('shadow-lg', scrollY <= 20);
     backToTop?.classList.toggle('hidden', scrollY < 500);
     backToTop?.classList.toggle('grid', scrollY >= 500);
   };
@@ -49,7 +55,12 @@
   addEventListener('resize', () => { if (innerWidth >= 1024) closeMenu(); });
   updateScroll();
 
-  const setActiveNav = id => navLinks.forEach(link => link.classList.toggle('active', link.hash === `#${id}`));
+  const setActiveNav = id => navLinks.forEach(link => {
+    const active = link.hash === `#${id}`;
+    link.classList.toggle('active', active);
+    if (active) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
   if ('IntersectionObserver' in window) {
     const navObserver = new IntersectionObserver(entries => {
       const activeEntry = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
@@ -58,7 +69,7 @@
     sections.forEach(section => navObserver.observe(section));
   } else {
     const updateActiveNav = () => {
-      const current = [...sections].filter(section => section.getBoundingClientRect().top <= innerHeight * 0.35).at(-1);
+      const current = [...sections].filter(section => section.getBoundingClientRect().top <= innerHeight * 0.35).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top).at(-1);
       if (current) setActiveNav(current.id);
     };
     addEventListener('scroll', updateActiveNav, { passive: true });

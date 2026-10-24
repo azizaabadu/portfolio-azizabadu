@@ -15,7 +15,7 @@ INSERT INTO skills (name, icon_class, category, level, sort_order) VALUES
 ('Git & GitHub', 'fa-brands fa-github', 'Database & Tools', 65, 8),
 ('Laravel', 'fa-brands fa-laravel', 'CMS/Framework', 58, 9),
 ('WordPress', 'fa-brands fa-wordpress', 'CMS/Framework', 58, 10),
-('UI Design', 'fa-solid fa-paintbrush', 'Frontend', 65, 11);
+('Figma', 'fa-brands fa-figma', 'Database & Tools', 65, 11);
 
 INSERT INTO education (school, major, start_year, end_year, description, sort_order) VALUES
 ('MAKN ENDE', 'Pengembangan Perangkat Lunak dan Gim (PPLG)', 2024, 'Sekarang', 'Sedang menempuh pendidikan dan mengembangkan keterampilan perangkat lunak.', 1),
