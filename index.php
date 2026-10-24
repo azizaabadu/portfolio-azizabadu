@@ -199,7 +199,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
         ['Revisi','Meninjau hasil dan menyempurnakannya dari masukan yang diberikan.','fa-pen-to-square'],
         ['Serah terima','Menyerahkan hasil akhir beserta file atau aset proyek.','fa-circle-check'],
       ]; foreach ($workflowSteps as $i=>$step): ?>
-      <li class="card reveal relative" style="--i:<?= (int)$i ?>"><span class="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-brand/10 text-xl text-brand dark:bg-brand-light/15 dark:text-brand-light"><i class="fa-solid <?= e($step[2]) ?>" aria-hidden="true"></i></span><p class="mb-2 text-sm font-bold tracking-widest text-brand dark:text-brand-light">0<?= (int)$i + 1 ?></p><h3 class="text-lg font-semibold"><?= e($step[0]) ?></h3><p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($step[1]) ?></p></li>
+      <li class="card reveal relative" style="--i:<?= (int)$i ?>"><span class="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-brand/10 text-xl text-brand dark:bg-brand-light/15 dark:text-brand-light"><i class="fa-solid <?= e($step[2]) ?>" aria-hidden="true"></i></span><h3 class="text-lg font-semibold"><?= e($step[0]) ?></h3><p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($step[1]) ?></p></li>
       <?php endforeach; ?>
     </ol></section>
 
