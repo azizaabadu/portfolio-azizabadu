@@ -8,8 +8,6 @@ require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/config/database.php';
 
 $portfolioConfig = [
-    // TODO: Ganti dengan email baru sebelum kartu email diaktifkan.
-    'email' => '[ISI EMAIL BARU]',
     'whatsapp' => '6282144725785',
     'social' => [
         ['platform'=>'GitHub','url'=>'https://github.com/azizaabadu','icon_class'=>'fa-brands fa-github'],
@@ -54,6 +52,7 @@ try {
     error_log('Portfolio database unavailable: ' . $exception->getMessage());
     $db = null;
 }
+$contactEmail = trim((string)(getenv('PORTFOLIO_CONTACT_EMAIL') ?: ($profile['email'] ?? '')));
 // The portfolio serves the uploaded PDF directly; ignore older Canva links stored in the profile row.
 $profile['cv_url'] = 'assets/cv/cv-aziza-badu.pdf';
 $linkedinUrl = '';
@@ -93,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_form'])) {
             $stmt = $db->prepare('INSERT INTO contact_messages (name,email,phone,subject,message,ip_address,user_agent) VALUES (:name,:email,:phone,:subject,:message,:ip,:agent)');
             $messageWithType = "Jenis kebutuhan: {$values['need_type']}\n\n{$values['message']}";
             $stmt->execute(['name'=>$values['name'],'email'=>$values['email'],'phone'=>$values['phone'] ?: null,'subject'=>$values['subject'],'message'=>$messageWithType,'ip'=>$ip,'agent'=>substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''),0,500)]);
-            $recipient = $portfolioConfig['email'];
+            $recipient = $contactEmail;
             if ($recipient && filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
                 $host = preg_replace('/[^a-zA-Z0-9.-]/', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')) ?: 'localhost';
                 $headers = "From: portfolio@{$host}\r\nReply-To: {$values['email']}";
@@ -290,7 +289,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       </div>
     </dialog>
 
-    <?php $emailAvailable = filter_var($portfolioConfig['email'], FILTER_VALIDATE_EMAIL) !== false; ?>
+    <?php $emailAvailable = filter_var($contactEmail, FILTER_VALIDATE_EMAIL) !== false; ?>
     <section id="kontak" class="reveal scroll-mt-28 bg-blue-50 text-brand-ink dark:bg-slate-950 dark:text-slate-100"><span id="contact" class="block scroll-mt-28"></span>
       <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
       <p class="eyebrow">Kontak</p><h2 class="section-title">Hubungi <span>Saya</span></h2><p class="section-description">Punya kendala stok, kasir, atau butuh website? Ceritakan kebutuhan Anda. Konsultasi awal gratis. Saya balas dalam 1-2 hari kerja.</p>
@@ -298,7 +297,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       <div class="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
         <div class="pt-1">
           <div class="grid gap-4">
-            <?php if ($emailAvailable): ?><a href="mailto:<?= e($portfolioConfig['email']) ?>" class="card group flex items-center gap-5 p-5"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:text-brand-light"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="min-w-0"><span class="block text-sm text-slate-500 dark:text-slate-400">Email</span><span class="break-all font-semibold"><?= e($portfolioConfig['email']) ?></span></span></a><?php endif; ?>
+            <?php if ($emailAvailable): ?><a href="mailto:<?= e($contactEmail) ?>" class="card group flex items-center gap-5 p-5"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:text-brand-light"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="min-w-0"><span class="block text-sm text-slate-500 dark:text-slate-400">Email</span><span class="break-all font-semibold"><?= e($contactEmail) ?></span></span></a><?php endif; ?>
             <a href="https://wa.me/<?= e($portfolioConfig['whatsapp']) ?>" target="_blank" rel="noopener noreferrer" class="card group flex items-center gap-5 p-5"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:text-brand-light"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span><span><span class="block text-sm text-slate-500 dark:text-slate-400">WhatsApp</span><span class="font-semibold">Chat langsung</span></span></a>
           </div>
           <ol class="mt-8 grid gap-4 text-sm text-slate-700 dark:text-slate-300"><li class="flex items-center gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white font-semibold text-brand dark:bg-slate-900">1</span>Kirim pesan</li><li class="flex items-center gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white font-semibold text-brand dark:bg-slate-900">2</span>Saya balas dan jadwalkan diskusi</li><li class="flex items-center gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white font-semibold text-brand dark:bg-slate-900">3</span>Kita susun solusi dan estimasi</li></ol>
