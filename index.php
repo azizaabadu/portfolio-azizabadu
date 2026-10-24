@@ -115,7 +115,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/images/favicon-portfAB.png" type="image/png">
+  <link rel="icon" href="assets/images/aziza-logo.png" type="image/png">
   <script>try{if(localStorage.getItem('aziza-theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>
   <title>Aziza Ony Badu | Portofolio</title>
 </head>
@@ -150,9 +150,9 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
   </div>
   <div class="scroll-progress fixed inset-x-0 top-0 z-[1200] h-[3px] w-0 bg-gradient-to-r from-brand to-brand-light" aria-hidden="true"></div>
   <header class="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-4 bg-white/80 px-[5%] py-4 shadow-sm backdrop-blur-lg dark:bg-slate-900/85 md:px-[9%] 2xl:grid 2xl:grid-cols-[1fr_auto_1fr]">
-    <a href="#home" class="bg-gradient-to-r from-brand to-brand-light bg-clip-text text-2xl font-extrabold text-transparent md:text-3xl 2xl:col-start-1 2xl:row-start-1">Aziza Badu</a>
+    <a href="#home" class="flex items-center 2xl:col-start-1 2xl:row-start-1" aria-label="Aziza Badu, ke beranda"><img src="assets/images/aziza-logo.png" alt="Logo Aziza Badu" width="52" height="52" class="h-11 w-11 object-contain md:h-12 md:w-12"></a>
     <nav id="site-nav" class="absolute inset-x-0 top-full hidden flex-col gap-1 bg-white/95 px-[5%] py-4 shadow-lg backdrop-blur-lg dark:bg-slate-900/95 md:static md:flex md:flex-row md:items-center md:gap-5 md:bg-transparent md:p-0 md:shadow-none dark:md:bg-transparent 2xl:col-start-2 2xl:row-start-1 2xl:justify-self-center" aria-label="Navigasi utama">
-      <a class="nav-link" href="#home">Beranda</a><a class="nav-link" href="#about">Tentang</a><a class="nav-link" href="#education">Pendidikan</a><a class="nav-link" href="#skills">Keahlian</a><a class="nav-link" href="#portfolio">Portofolio</a><a class="nav-link" href="#contact">Kontak</a>
+      <a class="nav-link" href="#home">Beranda</a><a class="nav-link" href="#about">Tentang</a><a class="nav-link" href="#education">Pendidikan</a><a class="nav-link" href="#skills">Keahlian</a><a class="nav-link" href="#workflow">Cara Kerja</a><a class="nav-link" href="#portfolio">Portofolio</a><a class="nav-link" href="#contact">Kontak</a>
       <a href="#contact" class="mobile-contact-link btn-secondary mt-3 md:hidden">Hubungi Saya</a>
     </nav>
     <div class="flex items-center gap-3 2xl:col-start-3 2xl:row-start-1 2xl:justify-self-end">
@@ -187,9 +187,21 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
 
     <section id="skills" class="reveal bg-brand-pale dark:bg-slate-800"><h2 class="section-title">Keahlian <span>Saya</span></h2><div class="mx-auto max-w-6xl space-y-10">
       <?php foreach ($skillGroups as $category=>$groupSkills): if (!$groupSkills) continue; ?><div><h3 class="mb-4 text-xl font-semibold"><?= e($category) ?></h3><div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <?php foreach ($groupSkills as $i=>$skill): $level = max(0, min(100, (int)$skill['level'])); ?><article class="card reveal" style="--i:<?= (int)$i ?>"><div class="flex items-center gap-4"><i class="<?= e($skill['icon_class']) ?> text-3xl text-brand dark:text-brand-light" aria-hidden="true"></i><div class="min-w-0 flex-1"><div class="flex items-center justify-between gap-3"><h4 class="font-semibold"><?= e($skill['name']) ?></h4><span class="text-sm text-slate-500 dark:text-slate-400"><?= $level ?>%</span></div><div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700"><div class="skill-fill h-full rounded-full bg-brand dark:bg-brand-light" style="--level:<?= $level ?>%" role="progressbar" aria-label="<?= e($skill['name']) ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?= $level ?>"></div></div></div></div></article><?php endforeach; ?>
+        <?php foreach ($groupSkills as $i=>$skill): ?><article class="card reveal" style="--i:<?= (int)$i ?>"><div class="flex items-center gap-4"><i class="<?= e($skill['icon_class']) ?> text-3xl text-brand dark:text-brand-light" aria-hidden="true"></i><h4 class="font-semibold"><?= e($skill['name']) ?></h4></div></article><?php endforeach; ?>
       </div></div><?php endforeach; ?>
     </div></section>
+
+    <section id="workflow" class="reveal"><h2 class="section-title">Cara <span>Kerja</span></h2><p class="mx-auto mb-10 max-w-2xl text-center leading-7 text-slate-600 dark:text-slate-300">Setiap proyek saya kerjakan melalui langkah yang terarah agar kebutuhan jelas dan hasilnya sesuai tujuan.</p><ol class="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      <?php $workflowSteps = [
+        ['Diskusi','Memahami kebutuhan, tujuan, dan ruang lingkup proyek.','fa-comments'],
+        ['Riset & konsep','Mencari referensi dan menyusun arah solusi serta tampilan.','fa-lightbulb'],
+        ['Pengerjaan','Membangun desain atau website berdasarkan konsep yang disepakati.','fa-code'],
+        ['Revisi','Meninjau hasil dan menyempurnakannya dari masukan yang diberikan.','fa-pen-to-square'],
+        ['Serah terima','Menyerahkan hasil akhir beserta file atau aset proyek.','fa-circle-check'],
+      ]; foreach ($workflowSteps as $i=>$step): ?>
+      <li class="card reveal relative" style="--i:<?= (int)$i ?>"><span class="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-brand/10 text-xl text-brand dark:bg-brand-light/15 dark:text-brand-light"><i class="fa-solid <?= e($step[2]) ?>" aria-hidden="true"></i></span><p class="mb-2 text-sm font-bold tracking-widest text-brand dark:text-brand-light">0<?= (int)$i + 1 ?></p><h3 class="text-lg font-semibold"><?= e($step[0]) ?></h3><p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($step[1]) ?></p></li>
+      <?php endforeach; ?>
+    </ol></section>
 
     <section id="portfolio" class="reveal"><h2 class="section-title">Proyek <span>Pilihan</span></h2><div class="project-filters mb-8 flex flex-wrap justify-center gap-3" role="group" aria-label="Filter proyek"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">Semua</button><?php foreach ($categories as $key=>$label): ?><button class="filter-btn" type="button" data-filter="<?= e($key) ?>" aria-pressed="false"><?= e($label) ?></button><?php endforeach; ?></div>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -232,7 +244,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
         <div class="pt-1">
           <p class="mb-7 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">Saya terbuka untuk proyek website, sistem web, dan kolaborasi jangka panjang. Respons biasanya dalam 24 jam.</p>
           <div class="grid gap-4">
-            <?php if ($contactEmail !== '' && filter_var($contactEmail, FILTER_VALIDATE_EMAIL)): ?><a href="mailto:<?= e($contactEmail) ?>" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="min-w-0"><span class="block text-sm text-slate-500 dark:text-slate-400">Email</span><span class="break-all font-semibold text-brand-ink dark:text-white"><?= e($contactEmail) ?></span></span></a><?php endif; ?>
+            <a href="mailto:azhinannasrudin@gmail.com" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="min-w-0"><span class="block text-sm text-slate-500 dark:text-slate-400">Email</span><span class="break-all font-semibold text-brand-ink dark:text-white">azhinannasrudin@gmail.com</span></span></a>
             <a href="https://wa.me/6282144725785" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span><span><span class="block text-sm text-slate-500 dark:text-slate-400">WhatsApp</span><span class="font-semibold text-brand-ink dark:text-white">Chat langsung</span></span></a>
           </div>
         </div>
