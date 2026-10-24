@@ -31,8 +31,6 @@ $socialLinks = [
     ['platform'=>'Instagram','url'=>'https://www.instagram.com/azizaabadu/','icon_class'=>'fa-brands fa-instagram'],
     ['platform'=>'LinkedIn','url'=>'https://www.linkedin.com/in/aziza-ony-badu-968a1240b/','icon_class'=>'fa-brands fa-linkedin']
 ];
-// TODO: Aktifkan kembali X setelah akun tersebut sesuai identitas profesional.
-$socialLinks = array_values(array_filter($socialLinks, static fn(array $social): bool => strtolower((string)($social['platform'] ?? '')) !== 'x'));
 $db = null;
 try {
     $db = portfolio_db();
@@ -165,23 +163,16 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
   </header>
 
   <main>
-    <section id="home" class="reveal scroll-mt-28 bg-gradient-to-b from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-slate-950 dark:to-slate-900">
-      <div class="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
-        <div class="order-2 md:order-1">
-          <p class="mb-2 text-lg font-semibold">Halo, saya</p><h1 class="bg-gradient-to-r from-brand to-brand-light bg-clip-text text-5xl font-extrabold leading-tight text-transparent md:text-6xl lg:text-7xl">Aziza Ony Badu</h1>
-          <p class="mt-3 text-xl font-semibold md:text-2xl">Saya seorang <span class="typed-role text-brand dark:text-brand-light">Web Developer</span><span class="ml-1 animate-typing border-r-2 border-brand" aria-hidden="true"></span></p>
-          <p class="mt-5 max-w-2xl text-base leading-8 text-slate-700 dark:text-slate-300">Siswa PPLG MAKN Ende yang membantu UMKM dan bisnis kecil membangun website dan sistem web. Punya kendala stok, kasir, atau butuh website? Ceritakan dulu, kita cari solusinya bersama.</p>
-          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot mr-2 text-brand dark:text-brand-light" aria-hidden="true"></i><?= e($profile['location']) ?></p>
-          <div class="mt-6 flex flex-wrap gap-3"><a href="https://wa.me/6282144725785" target="_blank" rel="noopener noreferrer" class="btn-primary focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"><i class="fa-brands fa-whatsapp mr-2" aria-hidden="true"></i>Konsultasi Sekarang</a><a href="<?= e($profile['cv_url']) ?>" target="_blank" rel="noopener noreferrer" class="btn-secondary focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"><i class="fa-solid fa-download mr-2" aria-hidden="true"></i>Lihat CV</a></div>
-          <div class="mt-5 flex flex-wrap gap-2"><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">Siswa PPLG MAKN Ende</span><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"><?= count($projects) ?> Proyek</span><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">Terbuka untuk Konsultasi</span></div>
-          <div class="mt-6 flex flex-wrap gap-3" aria-label="Media sosial"><?php foreach ($socialLinks as $social): ?><a class="grid h-11 w-11 place-items-center rounded-full border border-brand text-lg text-brand transition hover:-translate-y-1 hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi <?= e($social['platform']) ?>"><i class="<?= e($social['icon_class']) ?>" aria-hidden="true"></i></a><?php endforeach; ?></div>
-        </div>
-        <div class="relative order-1 mx-auto w-full max-w-sm md:order-2 md:max-w-md">
-          <span class="absolute -inset-5 -z-10 rounded-full bg-blue-200/50 blur-3xl dark:bg-blue-900/30" aria-hidden="true"></span>
-          <!-- TODO: Ganti foto ini dengan foto resolusi lebih tinggi, minimal lebar 1000px. Foto yang sama dipakai di Tentang. -->
-          <img src="assets/images/<?= e(basename((string)($profile['photo'] ?? 'zaza.png'))) ?>" alt="Foto Aziza Ony Badu, siswa PPLG dan web developer dari Ende" width="700" height="700" fetchpriority="high" class="mx-auto aspect-square w-[75vw] max-w-sm rounded-[44%_56%_62%_38%/42%_42%_58%_58%] border-4 border-brand object-cover object-top shadow-xl shadow-brand/20 md:w-full">
-        </div>
+    <section id="home" class="reveal grid min-h-screen items-center gap-10 pt-32 md:grid-cols-[1.15fr_.85fr] md:pt-28">
+      <div class="order-2 motion-safe:animate-hero-enter md:order-1">
+        <p class="mb-2 text-lg font-semibold">Halo, saya</p><h1 class="bg-gradient-to-r from-brand to-brand-light bg-clip-text text-5xl font-extrabold leading-tight text-transparent md:text-7xl"><?= e($profile['name']) ?></h1>
+        <p class="mt-3 text-xl font-semibold md:text-2xl">Saya seorang <span class="typed-role text-brand dark:text-brand-light">Web Developer</span><span class="ml-1 animate-typing border-r-2 border-brand"></span></p>
+        <p class="mt-5 max-w-2xl text-base leading-8 text-slate-700 dark:text-slate-300"><?= e($profile['bio']) ?></p>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-400"><i class="fa-solid fa-location-dot mr-2 text-brand dark:text-brand-light" aria-hidden="true"></i><?= e($profile['location']) ?></p>
+        <div class="mt-6 flex flex-wrap gap-3" aria-label="Media sosial"><?php foreach ($socialLinks as $social): ?><a class="grid h-11 w-11 place-items-center rounded-full border-2 border-brand text-lg text-brand transition hover:-translate-y-1 hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi <?= e($social['platform']) ?>"><i class="<?= e($social['icon_class']) ?>" aria-hidden="true"></i></a><?php endforeach; ?></div>
+        <div class="mt-3 flex flex-wrap gap-3"><a href="<?= e($profile['cv_url']) ?>" target="_blank" rel="noopener noreferrer" class="btn-primary"><i class="fa-solid fa-download mr-2" aria-hidden="true"></i>Lihat CV</a><a href="#contact" class="btn-secondary">Hubungi Saya</a></div>
       </div>
+      <div class="order-1 mx-auto w-full max-w-sm motion-safe:animate-hero-enter motion-safe:delay-150 md:order-2 md:max-w-md"><img src="assets/images/<?= e(basename((string)($profile['photo'] ?? 'zaza.png'))) ?>" alt="Foto profil <?= e($profile['name']) ?>" width="700" height="700" fetchpriority="high" class="mx-auto aspect-square w-[75vw] max-w-sm border-4 border-brand object-cover shadow-xl shadow-brand/20 animate-morph md:w-full"></div>
     </section>
 
     <section id="about" class="reveal scroll-mt-24 bg-brand-pale dark:bg-slate-800 motion-reduce:transition-none">
