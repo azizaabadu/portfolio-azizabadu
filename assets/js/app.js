@@ -34,14 +34,23 @@
     nav?.classList.toggle('flex', !expanded);
     menuButton.innerHTML = `<i class="fa-solid fa-${expanded ? 'bars' : 'xmark'}" aria-hidden="true"></i>`;
   });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') closeMenu();
+  });
+  document.addEventListener('click', event => {
+    if (menuButton?.getAttribute('aria-expanded') !== 'true') return;
+    if (!nav?.contains(event.target) && !menuButton?.contains(event.target)) closeMenu();
+  });
   navLinks.forEach(link => link.addEventListener('click', closeMenu));
   nav?.querySelector('.mobile-contact-link')?.addEventListener('click', closeMenu);
 
   const updateScroll = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
     if (progress) progress.style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
-    header?.classList.toggle('shadow-sm', scrollY > 8);
-    header?.classList.toggle('shadow-none', scrollY <= 8);
+    header?.classList.toggle('shadow-xl', scrollY > 20);
+    header?.classList.toggle('shadow-lg', scrollY <= 20);
+    header?.classList.toggle('shadow-blue-900/10', scrollY > 20);
+    header?.classList.toggle('shadow-blue-900/5', scrollY <= 20);
     backToTop?.classList.toggle('hidden', scrollY < 500);
     backToTop?.classList.toggle('grid', scrollY >= 500);
   };
