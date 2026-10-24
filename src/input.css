@@ -42,8 +42,8 @@
   .project-card[hidden] { display: none; }
   .filter-btn { @apply rounded-full border border-brand px-5 py-2 text-sm font-medium text-brand transition hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light; }
   .filter-btn.active { @apply bg-brand text-white dark:bg-brand-light dark:text-slate-950; }
-  .nav-link { @apply rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition duration-200 hover:bg-blue-50 hover:text-brand dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-brand-light; }
-  .nav-link.active { @apply bg-brand text-white hover:bg-brand hover:text-white dark:bg-brand dark:text-white dark:hover:bg-brand dark:hover:text-white; }
+  .nav-link { @apply border-b-2 border-transparent py-2 text-base font-medium transition hover:border-brand hover:text-brand dark:hover:text-brand-light; }
+  .nav-link.active { @apply border-brand text-brand dark:text-brand-light; }
 }
 
 @keyframes butterfly-journey {

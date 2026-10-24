@@ -149,16 +149,16 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
     <span class="intro-caption">AZIZA ONY BADU</span>
   </div>
   <div class="scroll-progress fixed inset-x-0 top-0 z-[1200] h-[3px] w-0 bg-gradient-to-r from-brand to-brand-light" aria-hidden="true"></div>
-  <header id="site-header" class="fixed inset-x-0 top-4 z-50 mx-auto flex w-[calc(100%-2rem)] max-w-5xl items-center justify-between gap-3 rounded-full border border-slate-200 bg-white/90 px-4 py-2 shadow-lg shadow-blue-900/5 backdrop-blur-md transition-shadow duration-200 dark:border-slate-800 dark:bg-slate-900/90 sm:px-6">
-    <a href="#home" class="flex shrink-0 items-center" aria-label="Aziza Badu, ke beranda"><img src="assets/images/aziza-logo.png" alt="Logo monogram Aziza Badu" width="56" height="56" class="h-12 w-12 object-contain"></a>
-    <nav id="site-nav" class="absolute inset-x-0 top-[calc(100%+0.75rem)] hidden flex-col gap-2 rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-xl shadow-blue-900/5 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95 lg:static lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-center lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none dark:lg:bg-transparent" aria-label="Navigasi utama">
-      <a class="nav-link" href="#home">Beranda</a><a class="nav-link" href="#layanan">Layanan</a><a class="nav-link" href="#portfolio">Portofolio</a><a class="nav-link" href="#about">Tentang</a>
-      <a href="#kontak" class="mobile-contact-link btn-primary mt-2 w-full lg:hidden">Konsultasi</a>
+  <header id="site-header" class="sticky top-0 z-50 flex items-center justify-between gap-4 bg-white/80 px-[5%] py-4 shadow-none backdrop-blur dark:bg-slate-900/80 md:px-[9%]">
+    <a href="#home" class="flex items-center 2xl:col-start-1 2xl:row-start-1" aria-label="Aziza Badu, ke beranda"><img src="assets/images/aziza-logo.png" alt="Logo Aziza Badu" width="52" height="52" class="h-11 w-11 object-contain md:h-12 md:w-12"></a>
+    <nav id="site-nav" class="absolute inset-x-0 top-full hidden flex-col gap-2 border-t border-slate-100 bg-white/95 px-[5%] py-4 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/95 lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none dark:lg:bg-transparent" aria-label="Navigasi utama">
+      <a class="nav-link" href="#home">Beranda</a><a class="nav-link" href="#about">Tentang</a><a class="nav-link" href="#skills">Keahlian</a><a class="nav-link" href="#portfolio">Portofolio</a>
+      <a href="#kontak" class="mobile-contact-link btn-primary mt-2 lg:hidden">Hubungi Saya</a>
     </nav>
-    <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+    <div class="flex items-center gap-3 lg:ml-6">
+      <a href="#kontak" class="btn-secondary hidden lg:inline-flex">Hubungi Saya</a>
       <button class="theme-toggle grid h-10 w-10 place-items-center rounded-full border border-brand text-brand transition hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" type="button" aria-label="Aktifkan mode gelap" title="Ganti tema"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
-      <button id="menu-button" class="grid h-10 w-10 place-items-center rounded-full text-xl text-brand transition hover:bg-blue-50 dark:text-brand-light dark:hover:bg-slate-800 lg:hidden" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Buka menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
-      <a href="#kontak" class="btn-primary hidden whitespace-nowrap lg:inline-flex">Konsultasi</a>
+      <button id="menu-button" class="grid h-10 w-10 place-items-center text-2xl text-brand lg:hidden" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Buka menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
     </div>
   </header>
 
