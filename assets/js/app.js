@@ -13,6 +13,7 @@
   }
   const nav = document.querySelector('#site-nav');
   const menuButton = document.querySelector('#menu-button');
+  const header = document.querySelector('#site-header');
   const progress = document.querySelector('.scroll-progress');
   const backToTop = document.querySelector('#back-to-top');
   const navLinks = [...document.querySelectorAll('.nav-link')];
@@ -39,15 +40,30 @@
   const updateScroll = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
     if (progress) progress.style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
+    header?.classList.toggle('shadow-sm', scrollY > 8);
+    header?.classList.toggle('shadow-none', scrollY <= 8);
     backToTop?.classList.toggle('hidden', scrollY < 500);
     backToTop?.classList.toggle('grid', scrollY >= 500);
-    let current = 'home';
-    sections.forEach(section => { if (scrollY >= section.offsetTop - 180) current = section.id; });
-    navLinks.forEach(link => link.classList.toggle('active', link.hash === `#${current}`));
   };
   addEventListener('scroll', updateScroll, { passive: true });
-  addEventListener('resize', () => { if (innerWidth >= 768) closeMenu(); });
+  addEventListener('resize', () => { if (innerWidth >= 1024) closeMenu(); });
   updateScroll();
+
+  const setActiveNav = id => navLinks.forEach(link => link.classList.toggle('active', link.hash === `#${id}`));
+  if ('IntersectionObserver' in window) {
+    const navObserver = new IntersectionObserver(entries => {
+      const activeEntry = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (activeEntry) setActiveNav(activeEntry.target.id);
+    }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
+    sections.forEach(section => navObserver.observe(section));
+  } else {
+    const updateActiveNav = () => {
+      const current = [...sections].filter(section => section.getBoundingClientRect().top <= innerHeight * 0.35).at(-1);
+      if (current) setActiveNav(current.id);
+    };
+    addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
+  }
 
   const revealItems = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
@@ -91,6 +107,7 @@
     if (!projectDialog || typeof projectDialog.showModal !== 'function') return;
     projectDetailTrigger = project;
     document.querySelector('#project-modal-title').textContent = project.dataset.title || '';
+    document.querySelector('#project-modal-role').textContent = project.dataset.role || '';
     document.querySelector('#project-modal-description').textContent = project.dataset.description || '';
     document.querySelector('#project-modal-category').textContent = project.dataset.categoryLabel || '';
     const image = document.querySelector('#project-modal-image');

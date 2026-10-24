@@ -5,7 +5,7 @@
 @layer base {
   html { @apply scroll-smooth; scroll-padding-top: 6rem; }
   body { @apply bg-canvas text-brand-ink transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100; }
-  section { @apply min-h-screen px-[5%] pb-8 pt-28 md:px-[9%]; }
+  section { @apply min-h-screen scroll-mt-24 px-[5%] pb-8 pt-28 md:px-[9%]; }
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-white dark:ring-offset-slate-900; }
   ::selection { @apply bg-brand text-white; }
   ::-webkit-scrollbar { width: 12px; }
