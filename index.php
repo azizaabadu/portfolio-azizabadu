@@ -191,7 +191,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       </div></div><?php endforeach; ?>
     </div></section>
 
-    <section id="workflow" class="reveal"><h2 class="section-title">Cara <span>Kerja</span></h2><p class="mx-auto mb-10 max-w-2xl text-center leading-7 text-slate-600 dark:text-slate-300">Setiap proyek saya kerjakan melalui langkah yang terarah agar kebutuhan jelas dan hasilnya sesuai tujuan.</p><ol class="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-5">
+    <section id="workflow" class="reveal"><h2 class="section-title">Cara <span>Kerja</span></h2><p class="mx-auto mb-10 max-w-2xl text-center leading-7 text-slate-600 dark:text-slate-300">Setiap proyek saya kerjakan melalui langkah yang terarah agar kebutuhan jelas dan hasilnya sesuai tujuan.</p><div class="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-5">
       <?php $workflowSteps = [
         ['Diskusi','Memahami kebutuhan, tujuan, dan ruang lingkup proyek.','fa-comments'],
         ['Riset & konsep','Mencari referensi dan menyusun arah solusi serta tampilan.','fa-lightbulb'],
@@ -199,9 +199,9 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
         ['Revisi','Meninjau hasil dan menyempurnakannya dari masukan yang diberikan.','fa-pen-to-square'],
         ['Serah terima','Menyerahkan hasil akhir beserta file atau aset proyek.','fa-circle-check'],
       ]; foreach ($workflowSteps as $i=>$step): ?>
-      <li class="card reveal relative" style="--i:<?= (int)$i ?>"><span class="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-brand/10 text-xl text-brand dark:bg-brand-light/15 dark:text-brand-light"><i class="fa-solid <?= e($step[2]) ?>" aria-hidden="true"></i></span><h3 class="text-lg font-semibold"><?= e($step[0]) ?></h3><p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($step[1]) ?></p></li>
+      <article class="card reveal relative" style="--i:<?= (int)$i ?>"><span class="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-brand/10 text-xl text-brand dark:bg-brand-light/15 dark:text-brand-light"><i class="fa-solid <?= e($step[2]) ?>" aria-hidden="true"></i></span><h3 class="text-lg font-semibold"><?= e($step[0]) ?></h3><p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($step[1]) ?></p></article>
       <?php endforeach; ?>
-    </ol></section>
+    </div></section>
 
     <section id="portfolio" class="reveal"><h2 class="section-title">Proyek <span>Pilihan</span></h2><div class="project-filters mb-8 flex flex-wrap justify-center gap-3" role="group" aria-label="Filter proyek"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">Semua</button><?php foreach ($categories as $key=>$label): ?><button class="filter-btn" type="button" data-filter="<?= e($key) ?>" aria-pressed="false"><?= e($label) ?></button><?php endforeach; ?></div>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
