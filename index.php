@@ -7,6 +7,18 @@ session_start();
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/config/database.php';
 
+$portfolioConfig = [
+    // TODO: Ganti dengan email baru sebelum kartu email diaktifkan.
+    'email' => '[ISI EMAIL BARU]',
+    'whatsapp' => '6282144725785',
+    'social' => [
+        ['platform'=>'GitHub','url'=>'https://github.com/azizaabadu','icon_class'=>'fa-brands fa-github'],
+        ['platform'=>'X','url'=>'https://x.com/AzhinanN55825','icon_class'=>'fa-brands fa-x-twitter'],
+        ['platform'=>'Instagram','url'=>'https://www.instagram.com/azizaabadu/','icon_class'=>'fa-brands fa-instagram'],
+        ['platform'=>'LinkedIn','url'=>'https://www.linkedin.com/in/aziza-ony-badu-968a1240b/','icon_class'=>'fa-brands fa-linkedin'],
+    ],
+];
+
 $bio = 'Siswa PPLG di MAKN Ende yang belajar pengembangan web full stack, termasuk Tailwind CSS, JavaScript, PHP, MySQL, dan Laravel. Mencari kesempatan magang untuk menerapkan keterampilan serta belajar dari tim pengembang profesional.';
 $profile = ['name' => 'Aziza Ony Badu', 'headline' => 'Siswa PPLG · Web Developer', 'bio' => $bio, 'location' => 'Ende, Nusa Tenggara Timur', 'cv_url' => 'assets/cv/cv-aziza-badu.pdf', 'open_to_internship' => 1, 'photo' => 'zaza.png'];
 $skills = [
@@ -25,14 +37,7 @@ $projects = [
     ['title'=>'Aplikasi Input Biodata','description'=>'Aplikasi Java untuk menerima dan menampilkan data biodata.','image'=>'3-2.png','category'=>'java','tech_stack'=>'Java','github_url'=>'','demo_url'=>''],
     ['title'=>'Aplikasi Kalkulator','description'=>'Kalkulator sederhana untuk operasi aritmetika dasar.','image'=>'4-2.png','category'=>'java','tech_stack'=>'Java','github_url'=>'','demo_url'=>''],
 ];
-$socialLinks = [
-    ['platform'=>'GitHub','url'=>'https://github.com/azizaabadu','icon_class'=>'fa-brands fa-github'],
-    ['platform'=>'X','url'=>'https://x.com/AzhinanN55825','icon_class'=>'fa-brands fa-x-twitter'],
-    ['platform'=>'Instagram','url'=>'https://www.instagram.com/azizaabadu/','icon_class'=>'fa-brands fa-instagram'],
-    ['platform'=>'LinkedIn','url'=>'https://www.linkedin.com/in/aziza-ony-badu-968a1240b/','icon_class'=>'fa-brands fa-linkedin']
-];
-// TODO: Aktifkan kembali X setelah akun tersebut sesuai identitas profesional.
-$socialLinks = array_values(array_filter($socialLinks, static fn(array $social): bool => strtolower((string)($social['platform'] ?? '')) !== 'x'));
+$socialLinks = $portfolioConfig['social'];
 $db = null;
 try {
     $db = portfolio_db();
@@ -47,7 +52,10 @@ try {
 }
 // The portfolio serves the uploaded PDF directly; ignore older Canva links stored in the profile row.
 $profile['cv_url'] = 'assets/cv/cv-aziza-badu.pdf';
-$linkedinUrl = 'https://www.linkedin.com/in/aziza-ony-badu-968a1240b/';
+$linkedinUrl = '';
+foreach ($portfolioConfig['social'] as $configuredSocial) {
+    if (strtolower((string)$configuredSocial['platform']) === 'linkedin') $linkedinUrl = (string)$configuredSocial['url'];
+}
 $linkedinFound = false;
 foreach ($socialLinks as &$social) {
     if (strtolower((string)($social['platform'] ?? '')) === 'linkedin') {
@@ -59,15 +67,17 @@ foreach ($socialLinks as &$social) {
 }
 unset($social);
 if (!$linkedinFound) $socialLinks[] = ['platform'=>'LinkedIn','url'=>$linkedinUrl,'icon_class'=>'fa-brands fa-linkedin'];
-$socialLinks = array_values(array_filter($socialLinks, static fn(array $social): bool => trim((string)($social['url'] ?? '')) !== ''));
+// TODO: X disembunyikan sementara sampai akun tersebut sesuai identitas profesional.
+$socialLinks = array_values(array_filter($socialLinks, static fn(array $social): bool => trim((string)($social['url'] ?? '')) !== '' && strtolower((string)($social['platform'] ?? '')) !== 'x'));
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_form'])) {
-    $values = ['name'=>trim((string)($_POST['name'] ?? '')), 'email'=>trim((string)($_POST['email'] ?? '')), 'phone'=>trim((string)($_POST['phone'] ?? '')), 'subject'=>trim((string)($_POST['subject'] ?? '')), 'message'=>trim((string)($_POST['message'] ?? ''))];
+    $values = ['name'=>trim((string)($_POST['name'] ?? '')), 'email'=>trim((string)($_POST['email'] ?? '')), 'phone'=>trim((string)($_POST['phone'] ?? '')), 'need_type'=>trim((string)($_POST['need_type'] ?? '')), 'subject'=>trim((string)($_POST['subject'] ?? '')), 'message'=>trim((string)($_POST['message'] ?? ''))];
     $errors = [];
     if (!csrf_verify(isset($_POST['csrf_token']) ? (string)$_POST['csrf_token'] : null)) $errors['form'] = 'Sesi formulir kedaluwarsa atau token keamanan tidak valid. Muat ulang halaman, lalu coba lagi.';
     if (trim((string)($_POST['website'] ?? '')) !== '') $errors['form'] = 'Permintaan tidak dapat diproses.';
     if (mb_strlen($values['name']) < 2 || mb_strlen($values['name']) > 100) $errors['name'] = 'Nama wajib diisi (2–100 karakter).';
     if (mb_strlen($values['email']) > 150 || !filter_var($values['email'], FILTER_VALIDATE_EMAIL)) $errors['email'] = 'Masukkan email yang valid (maksimal 150 karakter).';
+    if (!in_array($values['need_type'], ['Website','Sistem Kasir/Stok','Desain UI/UX','Konsultasi'], true)) $errors['need_type'] = 'Pilih jenis kebutuhan Anda.';
     if ($values['phone'] !== '' && (mb_strlen($values['phone']) < 6 || mb_strlen($values['phone']) > 20 || !preg_match('/^[0-9 +()\-]+$/', $values['phone']))) $errors['phone'] = 'Telepon hanya boleh berisi angka, spasi, +, -, dan tanda kurung (6–20 karakter).';
     if (mb_strlen($values['subject']) < 3 || mb_strlen($values['subject']) > 150 || preg_match('/[\r\n]/', $values['subject'])) $errors['subject'] = 'Subjek wajib diisi (3–150 karakter) tanpa baris baru.';
     if (mb_strlen($values['message']) < 10 || mb_strlen($values['message']) > 5000) $errors['message'] = 'Pesan wajib berisi 10–5.000 karakter.';
@@ -77,12 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_form'])) {
     if (!$errors) {
         try {
             $stmt = $db->prepare('INSERT INTO contact_messages (name,email,phone,subject,message,ip_address,user_agent) VALUES (:name,:email,:phone,:subject,:message,:ip,:agent)');
-            $stmt->execute(['name'=>$values['name'],'email'=>$values['email'],'phone'=>$values['phone'] ?: null,'subject'=>$values['subject'],'message'=>$values['message'],'ip'=>$ip,'agent'=>substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''),0,500)]);
-            $recipient = getenv('PORTFOLIO_CONTACT_EMAIL');
+            $messageWithType = "Jenis kebutuhan: {$values['need_type']}\n\n{$values['message']}";
+            $stmt->execute(['name'=>$values['name'],'email'=>$values['email'],'phone'=>$values['phone'] ?: null,'subject'=>$values['subject'],'message'=>$messageWithType,'ip'=>$ip,'agent'=>substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''),0,500)]);
+            $recipient = $portfolioConfig['email'];
             if ($recipient && filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
                 $host = preg_replace('/[^a-zA-Z0-9.-]/', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')) ?: 'localhost';
                 $headers = "From: portfolio@{$host}\r\nReply-To: {$values['email']}";
-                @mail($recipient, str_replace(["\r", "\n"], '', $values['subject']), "Nama: {$values['name']}\nEmail: {$values['email']}\nTelepon: {$values['phone']}\n\n{$values['message']}", $headers);
+                @mail($recipient, str_replace(["\r", "\n"], '', $values['subject']), "Nama: {$values['name']}\nEmail: {$values['email']}\nTelepon: {$values['phone']}\nJenis kebutuhan: {$values['need_type']}\n\n{$values['message']}", $headers);
             }
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); $_SESSION['csrf_expires'] = time() + 3600;
             flash('contact', ['type'=>'success','message'=>'Terima kasih! Pesanmu berhasil disimpan.']);
@@ -172,7 +183,7 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
           <p class="mt-3 text-xl font-semibold md:text-2xl">Saya seorang <span class="typed-role text-brand dark:text-brand-light">Web Developer</span><span class="ml-1 animate-typing border-r-2 border-brand" aria-hidden="true"></span></p>
           <p class="mt-5 max-w-2xl text-base leading-8 text-slate-700 dark:text-slate-300">Siswa PPLG MAKN Ende yang membantu UMKM dan bisnis kecil membangun website dan sistem web. Punya kendala stok, kasir, atau butuh website? Ceritakan dulu, kita cari solusinya bersama.</p>
           <p class="mt-3 text-sm text-slate-600 dark:text-slate-300"><i class="fa-solid fa-location-dot mr-2 text-brand dark:text-brand-light" aria-hidden="true"></i><?= e($profile['location']) ?></p>
-          <div class="mt-6 flex flex-wrap gap-3"><a href="https://wa.me/6282144725785" target="_blank" rel="noopener noreferrer" class="btn-primary focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"><i class="fa-brands fa-whatsapp mr-2" aria-hidden="true"></i>Konsultasi Sekarang</a><a href="<?= e($profile['cv_url']) ?>" target="_blank" rel="noopener noreferrer" class="btn-secondary focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"><i class="fa-solid fa-download mr-2" aria-hidden="true"></i>Lihat CV</a></div>
+          <div class="mt-6 flex flex-wrap gap-3"><a href="https://wa.me/<?= e($portfolioConfig['whatsapp']) ?>" target="_blank" rel="noopener noreferrer" class="btn-primary focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"><i class="fa-brands fa-whatsapp mr-2" aria-hidden="true"></i>Konsultasi Sekarang</a><a href="<?= e($profile['cv_url']) ?>" target="_blank" rel="noopener noreferrer" class="btn-secondary focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"><i class="fa-solid fa-download mr-2" aria-hidden="true"></i>Lihat CV</a></div>
           <div class="mt-5 flex flex-wrap gap-2"><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">Siswa PPLG MAKN Ende</span><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"><?= count($projects) ?> Proyek</span><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">Terbuka untuk Konsultasi</span></div>
           <div class="mt-6 flex flex-wrap gap-3" aria-label="Media sosial"><?php foreach ($socialLinks as $social): ?><a class="grid h-11 w-11 place-items-center rounded-full border border-brand text-lg text-brand transition hover:-translate-y-1 hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi <?= e($social['platform']) ?>"><i class="<?= e($social['icon_class']) ?>" aria-hidden="true"></i></a><?php endforeach; ?></div>
         </div>
@@ -246,10 +257,10 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
               ['Pengerjaan','Membangun desain atau website berdasarkan konsep yang disepakati.'],
               ['Revisi','Meninjau hasil dan menyempurnakannya dari masukan yang diberikan.'],
               ['Serah Terima','Menyerahkan hasil akhir beserta file atau aset proyek.'],
-            ]; foreach ($workflowSteps as $i=>$step): ?>
-            <div class="flex items-start gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"><?= (int)$i + 1 ?></span><p class="pt-1 text-sm leading-6"><span class="font-semibold"><?= e($step[0]) ?></span> — <?= e($step[1]) ?></p></div>
+            ]; foreach ($workflowSteps as $step): ?>
+            <div class="flex items-start gap-3"><span class="mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-blue-50 text-xs text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"><i class="fa-solid fa-check" aria-hidden="true"></i></span><p class="text-sm leading-6"><span class="font-semibold"><?= e($step[0]) ?></span> — <?= e($step[1]) ?></p></div>
             <?php endforeach; ?>
-          </div><p class="mt-5 border-t border-slate-200 pt-4 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:text-slate-300">[ISI: misalnya bantuan perbaikan kecil setelah serah terima]</p></div>
+          </div><!-- TODO: Tambahkan keterangan dukungan setelah serah terima jika sudah ditentukan. --></div>
         </div>
       </div>
     </section>
@@ -273,66 +284,35 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       </div>
     </dialog>
 
-    <?php
-      $contactEmail = trim((string)(getenv('PORTFOLIO_CONTACT_EMAIL') ?: ($profile['email'] ?? '')));
-      $contactPhone = preg_replace('/\D+/', '', (string)($profile['phone'] ?? ''));
-      $instagram = current(array_filter($socialLinks, static fn(array $social): bool => strtolower((string)$social['platform']) === 'instagram')) ?: null;
-    ?>
-    <section id="kontak" class="reveal scroll-mt-24 bg-brand-pale text-brand-ink dark:bg-slate-800 dark:text-slate-100"><span id="contact" class="block scroll-mt-24"></span>
-      <h2 class="section-title !text-brand-ink dark:!text-white">Hubungi <span>Saya</span></h2>
+    <?php $emailAvailable = filter_var($portfolioConfig['email'], FILTER_VALIDATE_EMAIL) !== false; ?>
+    <section id="kontak" class="reveal scroll-mt-28 bg-blue-50 text-brand-ink dark:bg-slate-950 dark:text-slate-100"><span id="contact" class="block scroll-mt-28"></span>
+      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+      <p class="eyebrow">Kontak</p><h2 class="section-title">Hubungi <span>Saya</span></h2><p class="section-description">Punya kendala stok, kasir, atau butuh website? Ceritakan kebutuhan Anda. Konsultasi awal gratis. Saya balas dalam 1-2 hari kerja.</p>
       <?php if (is_array($contactFlash)): ?><p class="mx-auto mb-6 max-w-6xl rounded-xl <?= $contactFlash['type']==='success' ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-100' : 'bg-red-100 text-red-900 dark:bg-red-900/60 dark:text-red-100' ?> p-4" role="status"><?= e($contactFlash['message']) ?></p><?php endif; ?>
-      <div class="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-2 lg:gap-12">
+      <div class="grid items-start gap-8 lg:grid-cols-2 lg:gap-10">
         <div class="pt-1">
-          <p class="mb-7 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">Saya terbuka untuk proyek website, sistem web, dan kolaborasi jangka panjang. Respons biasanya dalam 24 jam.</p>
           <div class="grid gap-4">
-            <a href="mailto:azhinannasrudin@gmail.com" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="min-w-0"><span class="block text-sm text-slate-500 dark:text-slate-400">Email</span><span class="break-all font-semibold text-brand-ink dark:text-white">azhinannasrudin@gmail.com</span></span></a>
-            <a href="https://wa.me/6282144725785" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 rounded-3xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900"><span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:bg-slate-800 dark:text-white"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span><span><span class="block text-sm text-slate-500 dark:text-slate-400">WhatsApp</span><span class="font-semibold text-brand-ink dark:text-white">Chat langsung</span></span></a>
+            <?php if ($emailAvailable): ?><a href="mailto:<?= e($portfolioConfig['email']) ?>" class="card group flex items-center gap-5 p-5"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:text-brand-light"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="min-w-0"><span class="block text-sm text-slate-500 dark:text-slate-400">Email</span><span class="break-all font-semibold"><?= e($portfolioConfig['email']) ?></span></span></a><?php endif; ?>
+            <a href="https://wa.me/<?= e($portfolioConfig['whatsapp']) ?>" target="_blank" rel="noopener noreferrer" class="card group flex items-center gap-5 p-5"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand/10 text-xl text-brand dark:text-brand-light"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span><span><span class="block text-sm text-slate-500 dark:text-slate-400">WhatsApp</span><span class="font-semibold">Chat langsung</span></span></a>
           </div>
+          <ol class="mt-8 grid gap-4 text-sm text-slate-700 dark:text-slate-300"><li class="flex items-center gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white font-semibold text-brand dark:bg-slate-900">1</span>Kirim pesan</li><li class="flex items-center gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white font-semibold text-brand dark:bg-slate-900">2</span>Saya balas dan jadwalkan diskusi</li><li class="flex items-center gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white font-semibold text-brand dark:bg-slate-900">3</span>Kita susun solusi dan estimasi</li></ol>
         </div>
-        <form action="https://formspree.io/f/mgaawjbb" method="post" class="grid gap-1 rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-brand/10 sm:p-8 dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-black/20" novalidate>
-          <input type="hidden" name="_subject" value="Pesan melalui formulir portofolio"><input type="hidden" name="phone" value="<?= e($contactValues['phone'] ?? '') ?>">
-          <div class="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true"><label for="website">Jangan isi kolom ini</label><input id="website" type="text" name="_gotcha" tabindex="-1" autocomplete="off"></div>
-          <div class="mb-3"><label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="name">Nama</label><input class="w-full rounded-3xl border border-slate-300 bg-white px-5 py-5 text-brand-ink placeholder:text-slate-400 focus:border-brand focus:ring-0 dark:border-slate-700 dark:bg-slate-950/70 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-slate-500" id="name" name="name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Nama lengkap Anda" value="<?= e($contactValues['name'] ?? '') ?>" aria-describedby="name-error"><p id="name-error" class="mt-1 text-sm text-red-700 dark:text-red-300"><?= e($contactErrors['name'] ?? '') ?></p></div>
-          <div class="mb-3"><label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="email">Email</label><input class="w-full rounded-3xl border border-slate-300 bg-white px-5 py-5 text-brand-ink placeholder:text-slate-400 focus:border-brand focus:ring-0 dark:border-slate-700 dark:bg-slate-950/70 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-slate-500" id="email" type="email" name="email" autocomplete="email" maxlength="150" required placeholder="email@contoh.com" value="<?= e($contactValues['email'] ?? '') ?>" aria-describedby="email-error"><p id="email-error" class="mt-1 text-sm text-red-700 dark:text-red-300"><?= e($contactErrors['email'] ?? '') ?></p></div>
-          <div class="mb-2"><label class="mb-2 block text-sm font-semibold text-slate-600 dark:text-slate-400" for="message">Pesan</label><textarea class="w-full resize-y rounded-3xl border border-slate-300 bg-white px-5 py-5 text-brand-ink placeholder:text-slate-400 focus:border-brand focus:ring-0 dark:border-slate-700 dark:bg-slate-950/70 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-slate-500" id="message" name="message" rows="4" minlength="10" maxlength="5000" required placeholder="Ceritakan tentang proyek Anda..." aria-describedby="message-error"><?= e($contactValues['message'] ?? '') ?></textarea><p id="message-error" class="mt-1 text-sm text-red-700 dark:text-red-300"><?= e($contactErrors['message'] ?? '') ?></p></div>
-          <button class="mt-1 w-full rounded-full bg-brand px-6 py-5 font-semibold text-white transition hover:bg-blue-700 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200" type="submit">Kirim Pesan</button>
+        <form id="contact-form" action="https://formspree.io/f/mgaawjbb" method="post" class="card grid gap-1 p-6 sm:p-8" novalidate>
+          <input type="hidden" name="_subject" value="Pesan melalui formulir portofolio">
+          <div class="sr-only" aria-hidden="true"><label for="website">Jangan isi kolom ini</label><input id="website" type="text" name="_gotcha" tabindex="-1" autocomplete="off"></div>
+          <div class="mb-3"><label class="mb-2 block text-sm font-semibold" for="name">Nama</label><input class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-brand-ink placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-400" id="name" name="name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Nama lengkap Anda" value="<?= e($contactValues['name'] ?? '') ?>" aria-describedby="name-error"><p id="name-error" class="mt-1 text-sm text-red-700 dark:text-red-300"><?= e($contactErrors['name'] ?? '') ?></p></div>
+          <div class="mb-3"><label class="mb-2 block text-sm font-semibold" for="email">Email</label><input class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-brand-ink placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-400" id="email" type="email" name="email" autocomplete="email" maxlength="150" required placeholder="email@contoh.com" value="<?= e($contactValues['email'] ?? '') ?>" aria-describedby="email-error"><p id="email-error" class="mt-1 text-sm text-red-700 dark:text-red-300"><?= e($contactErrors['email'] ?? '') ?></p></div>
+          <div class="mb-3"><label class="mb-2 block text-sm font-semibold" for="phone">Nomor WhatsApp (opsional)</label><input class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-brand-ink placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-400" id="phone" type="tel" name="phone" autocomplete="tel" maxlength="20" placeholder="08xx-xxxx-xxxx" value="<?= e($contactValues['phone'] ?? '') ?>"></div>
+          <div class="mb-3"><label class="mb-2 block text-sm font-semibold" for="need_type">Jenis kebutuhan</label><select id="need_type" name="need_type" required class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-brand-ink focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-950 dark:text-white" aria-describedby="need-type-error"><option value="">Pilih jenis kebutuhan</option><?php foreach (['Website','Sistem Kasir/Stok','Desain UI/UX','Konsultasi'] as $needType): ?><option value="<?= e($needType) ?>" <?= ($contactValues['need_type'] ?? '') === $needType ? 'selected' : '' ?>><?= e($needType) ?></option><?php endforeach; ?></select><p id="need-type-error" class="mt-1 text-sm text-red-700 dark:text-red-300"><?= e($contactErrors['need_type'] ?? '') ?></p></div>
+          <div class="mb-2"><label class="mb-2 block text-sm font-semibold" for="message">Pesan</label><textarea class="w-full resize-y rounded-2xl border border-slate-300 bg-white px-4 py-3 text-brand-ink placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-400" id="message" name="message" rows="4" minlength="10" maxlength="5000" required placeholder="Ceritakan masalah atau kebutuhan Anda..." aria-describedby="message-error"><?= e($contactValues['message'] ?? '') ?></textarea><p id="message-error" class="mt-1 text-sm text-red-700 dark:text-red-300"><?= e($contactErrors['message'] ?? '') ?></p></div>
+          <p id="contact-form-status" class="hidden rounded-2xl px-5 py-4 text-sm font-semibold" role="status" aria-live="polite"></p><button class="btn-primary mt-1 w-full" type="submit"><i class="fa-solid fa-paper-plane mr-2" aria-hidden="true"></i>Kirim Pesan</button>
         </form>
+      </div>
       </div>
     </section>
   </main>
   <footer class="bg-white px-[5%] py-8 text-center dark:bg-slate-900"><div class="mb-5 flex justify-center gap-4"><?php foreach ($socialLinks as $social): ?><a class="grid h-10 w-10 place-items-center rounded-full border border-brand text-brand transition hover:bg-brand hover:text-white dark:border-brand-light dark:text-brand-light" href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi <?= e($social['platform']) ?>"><i class="<?= e($social['icon_class']) ?>" aria-hidden="true"></i></a><?php endforeach; ?></div><p class="text-sm text-slate-600 dark:text-slate-400">&copy; <?= date('Y') ?> Aziza Ony Badu · Hak cipta dilindungi.</p></footer>
   <a href="#home" id="back-to-top" class="fixed bottom-5 right-5 z-40 hidden h-12 w-12 place-items-center rounded-full bg-brand text-white shadow-lg transition hover:-translate-y-1" aria-label="Kembali ke atas"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
-  <script src="assets/js/app.js?v=20261021-intro1" defer></script>
-  <script>
-    document.querySelectorAll('form[action="https://formspree.io/f/mgaawjbb"]').forEach((form) => {
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        if (!form.reportValidity()) return;
-        let notice = form.querySelector('[data-form-notice]');
-        if (!notice) {
-          notice = document.createElement('p');
-          notice.setAttribute('data-form-notice', '');
-          notice.setAttribute('role', 'status');
-          notice.setAttribute('aria-live', 'polite');
-          notice.className = 'mt-4 rounded-2xl bg-green-100 px-5 py-4 font-semibold text-green-900 dark:bg-green-900/40 dark:text-green-100';
-          form.appendChild(notice);
-        }
-        notice.textContent = 'Mengirim pesan…';
-        try {
-          const response = await fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { Accept: 'application/json' }
-          });
-          if (!response.ok) throw new Error('Submission failed');
-          notice.textContent = 'Pesan berhasil dikirim. Terima kasih sudah menghubungi saya!';
-          form.reset();
-        } catch (error) {
-          notice.className = 'mt-4 rounded-2xl bg-red-100 px-5 py-4 font-semibold text-red-900 dark:bg-red-900/40 dark:text-red-100';
-          notice.textContent = 'Pesan belum berhasil dikirim. Silakan coba lagi.';
-        }
-      });
-    });
-  </script>
+  <script src="assets/js/app.js?v=20261024-client-refresh" defer></script>
 </body>
 </html>
