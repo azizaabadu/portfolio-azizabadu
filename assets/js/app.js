@@ -153,7 +153,7 @@
     });
   }));
 
-  const roles = ['Web Developer', 'Full Stack Developer', 'UI Designer'];
+  const roles = ['Web Developer', 'UI/UX Designer', 'Pembuat Sistem Kasir & Stok'];
   const role = document.querySelector('.typed-role');
   if (role && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     let roleIndex = 0;
