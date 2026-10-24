@@ -117,9 +117,7 @@
     projectDetailTrigger = project;
     document.querySelector('#project-modal-title').textContent = project.dataset.title || '';
     document.querySelector('#project-modal-role').textContent = project.dataset.role || '';
-    document.querySelector('#project-modal-problem').textContent = project.dataset.problem || '';
-    document.querySelector('#project-modal-solution').textContent = project.dataset.solution || '';
-    document.querySelector('#project-modal-result').textContent = project.dataset.result?.trim() || '[ISI HASIL NYATA, mis. dampak bagi pemilik toko]';
+    document.querySelector('#project-modal-description').textContent = project.dataset.description || '';
     document.querySelector('#project-modal-category').textContent = project.dataset.categoryLabel || '';
     const image = document.querySelector('#project-modal-image');
     image.src = project.dataset.image || '';
@@ -136,25 +134,10 @@
     setProjectLink(document.querySelector('#project-modal-demo'), project.dataset.demo);
     setProjectLink(document.querySelector('#project-modal-figma'), project.dataset.figma);
     projectDialog.showModal();
-    projectDialogClose?.focus();
   }));
   projectDialogClose?.addEventListener('click', () => projectDialog?.close());
   projectDialog?.addEventListener('click', event => {
     if (event.target === projectDialog) projectDialog.close();
-  });
-  projectDialog?.addEventListener('keydown', event => {
-    if (event.key !== 'Tab') return;
-    const focusable = [...projectDialog.querySelectorAll('button:not([hidden]), a:not([hidden])')].filter(item => item.offsetParent !== null);
-    if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && (document.activeElement === first || !projectDialog.contains(document.activeElement))) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
   });
   projectDialog?.addEventListener('close', () => projectDetailTrigger?.focus());
   filterButtons.forEach(button => button.addEventListener('click', () => {
@@ -167,9 +150,6 @@
     projects.forEach(project => {
       const show = filter === 'all' || project.dataset.category === filter;
       project.hidden = !show;
-    });
-    document.querySelectorAll('[data-project-group]').forEach(group => {
-      group.hidden = ![...group.querySelectorAll('.project-card')].some(project => !project.hidden);
     });
   }));
 
