@@ -201,36 +201,23 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       </div>
     </section>
 
-    <section id="portfolio" class="reveal scroll-mt-24"><h2 class="section-title">Proyek <span>Pilihan</span></h2><div class="project-filters mb-8 flex flex-wrap justify-center gap-3" role="group" aria-label="Filter proyek"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">Semua</button><?php foreach ($categories as $key=>$label): ?><button class="filter-btn" type="button" data-filter="<?= e($key) ?>" aria-pressed="false"><?= e($label) ?></button><?php endforeach; ?></div>
-      <div class="grid grid-cols-1 items-stretch gap-6 md:grid-cols-4 lg:grid-cols-6">
-        <?php foreach ($projects as $i=>$project): ?>
-        <?php
-          $projectRole = match ((string)$project['title']) {
-            'Sistem Stok & Penjualan Toko Pakaian' => 'Membangun sistem pencatatan stok dan transaksi penjualan.',
-            'POS Beauty — Sistem Kasir Toko Kecantikan' => 'Mengembangkan aplikasi POS sebagai tugas akhir kelas industri.',
-            'Desain Website Rizky Store di Figma' => 'Merancang UI/UX website Rizky Store di Figma.',
-            'Aplikasi Input Biodata' => 'Membuat antarmuka untuk memasukkan dan menampilkan biodata.',
-            'Aplikasi Kalkulator' => 'Membuat aplikasi kalkulator untuk operasi aritmetika dasar.',
-            default => 'Peran proyek belum diisi.',
-          };
-          $projectDescription = match ((string)$project['title']) {
-            'Sistem Stok & Penjualan Toko Pakaian' => 'Sistem stok dan penjualan berbasis PHP, MySQL, dan Tailwind CSS membantu UMKM pakaian mencatat barang masuk, barang keluar, dan transaksi dengan lebih rapi. Proyek ini berangkat dari kendala pencatatan persediaan yang ditemui pada UMKM pakaian di Flores Timur.',
-            'POS Beauty — Sistem Kasir Toko Kecantikan' => 'Aplikasi POS Beauty berbasis PHP dan MySQL membantu toko kecantikan mengelola produk, pelanggan, transaksi, dan laporan penjualan. Dashboard merangkum jumlah pelanggan, produk, dan transaksi terbaru sebagai tugas akhir kelas industri.',
-            'Desain Website Rizky Store di Figma' => 'Rancangan UI/UX di Figma untuk website Rizky Store menyusun navigasi, katalog promosi, kontak WhatsApp, dan informasi lokasi toko peralatan rumah tangga di Larantuka. Desain ini merupakan tahap awal sebelum rencana implementasi WordPress dan belum menjadi website aktif.',
-            'Aplikasi Input Biodata' => 'Aplikasi Java ini menerima dan menampilkan data biodata melalui antarmuka formulir.',
-            'Aplikasi Kalkulator' => 'Aplikasi Java ini menyediakan kalkulator untuk operasi aritmetika dasar.',
-            default => (string)$project['description'],
-          };
-          $projectTech = array_values(array_filter(array_map('trim', explode(',', (string)($project['tech_stack'] ?? '')))));
-          if (!$projectTech) $projectTech = ['[ISI TEKNOLOGI]'];
-          $desktopPlacement = $i === 3 ? 'lg:col-start-2' : ($i === 4 ? 'lg:col-start-4' : '');
-          $tabletPlacement = $i === 4 ? 'md:col-start-2' : '';
-        ?>
-        <button type="button" class="project-card card group reveal col-span-1 flex h-full w-full flex-col overflow-hidden p-0 text-left transition hover:-translate-y-1 hover:shadow-xl md:col-span-2 <?= $tabletPlacement ?> <?= $desktopPlacement ?>" style="--i:<?= (int)$i ?>" data-category="<?= e($project['category']) ?>" data-title="<?= e($project['title']) ?>" data-role="<?= e($projectRole) ?>" data-description="<?= e($projectDescription) ?>" data-image="assets/images/<?= e(basename($project['image'])) ?>" data-category-label="<?= e($categories[$project['category']] ?? $project['category']) ?>" data-tech="<?= e(implode(',', $projectTech)) ?>" data-github="<?= e($project['github_url'] ?? '') ?>" data-demo="<?= e($project['demo_url'] ?? '') ?>" data-figma="<?= e($project['figma_url'] ?? '') ?>" aria-haspopup="dialog" aria-label="Lihat detail proyek: <?= e($project['title']) ?>">
-          <span class="relative block aspect-video w-full shrink-0 overflow-hidden"><img src="assets/images/<?= e(basename($project['image'])) ?>" alt="Pratinjau proyek: <?= e($project['title']) ?>" width="800" height="500" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105 <?= $project['category'] === 'java' ? 'object-center' : '' ?>"><span class="absolute inset-0 bg-brand/0 transition duration-300 group-hover:bg-brand/15"></span></span>
-          <span class="flex flex-1 flex-col p-5"><span class="mb-3 flex flex-wrap items-center justify-between gap-2"><span class="rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand dark:bg-brand-light/15 dark:text-brand-light"><?= e($categories[$project['category']] ?? $project['category']) ?></span><?php if (!empty($project['is_featured'])): ?><span class="text-xs font-semibold text-amber-600"><i class="fa-solid fa-star mr-1" aria-hidden="true"></i>Unggulan</span><?php endif; ?></span><?php if ($project['category'] === 'java'): ?><span class="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Proyek Latihan</span><?php endif; ?><span class="block text-xl font-semibold text-brand-ink dark:text-white"><?= e($project['title']) ?></span><span class="mt-2 line-clamp-3 text-left text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($projectDescription) ?></span><span class="mt-4 flex flex-wrap gap-2" aria-label="Teknologi proyek"><?php foreach ($projectTech as $technology): ?><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-200"><?= e($technology) ?></span><?php endforeach; ?></span><span class="mt-auto flex items-center gap-2 pt-5 text-sm font-semibold text-brand dark:text-brand-light">Lihat detail <i class="fa-solid fa-arrow-right transition group-hover:translate-x-1" aria-hidden="true"></i></span></span>
-        </button>
-        <?php endforeach; ?>
+    <section id="portfolio" class="reveal scroll-mt-28 bg-blue-50 dark:bg-slate-950">
+      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <p class="eyebrow">Portofolio</p><h2 class="section-title">Proyek <span>Pilihan</span></h2><p class="section-description">Beberapa proyek yang saya kerjakan untuk berlatih dan menyelesaikan kebutuhan nyata.</p>
+        <div class="project-filters mb-10 flex flex-wrap justify-center gap-3" role="group" aria-label="Filter proyek"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">Semua</button><?php foreach ($categories as $key=>$label): ?><button class="filter-btn" type="button" data-filter="<?= e($key) ?>" aria-pressed="false"><?= e($label) ?></button><?php endforeach; ?></div>
+        <?php $mainProjects = array_slice($projects, 0, 3); $practiceProjects = array_slice($projects, 3); ?>
+        <div class="project-group mb-12" data-project-group>
+          <h3 class="mb-5 text-2xl font-semibold">Proyek <span class="text-brand dark:text-brand-light">Utama</span></h3>
+          <div class="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <?php foreach ($mainProjects as $i=>$project) include __DIR__ . '/includes/project-card.php'; ?>
+          </div>
+        </div>
+        <div class="project-group" data-project-group>
+          <h3 class="mb-5 text-xl font-semibold text-slate-700 dark:text-slate-200">Proyek Latihan</h3>
+          <div class="mx-auto grid max-w-4xl grid-cols-1 items-stretch gap-5 md:grid-cols-2">
+            <?php foreach ($practiceProjects as $i=>$project) { $i += count($mainProjects); include __DIR__ . '/includes/project-card.php'; } ?>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -267,15 +254,15 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       </div>
     </section>
 
-    <dialog id="project-modal" class="m-auto max-h-[90vh] w-[min(92vw,48rem)] overflow-y-auto rounded-2xl bg-white p-0 text-brand-ink shadow-2xl backdrop:bg-slate-950/70 dark:bg-slate-800 dark:text-slate-100" aria-labelledby="project-modal-title">
+    <dialog id="project-modal" class="m-auto max-h-[90vh] w-[min(92vw,48rem)] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-0 text-brand-ink shadow-2xl backdrop:bg-slate-950/70 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" aria-labelledby="project-modal-title">
       <div class="relative">
-        <button type="button" id="project-modal-close" class="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-xl text-slate-900 shadow transition hover:bg-white" aria-label="Tutup detail proyek"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-        <img id="project-modal-image" src="" alt="" class="aspect-[16/9] w-full object-cover">
+        <button type="button" id="project-modal-close" class="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white text-xl text-slate-900 shadow-lg transition hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" aria-label="Tutup detail proyek"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <img id="project-modal-image" src="" alt="" class="max-h-[38vh] w-full bg-slate-100 object-contain dark:bg-slate-950">
         <div class="p-6 sm:p-8">
           <span id="project-modal-category" class="rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand dark:bg-brand-light/15 dark:text-brand-light"></span>
           <h2 id="project-modal-title" class="mt-4 text-2xl font-bold sm:text-3xl"></h2>
           <p class="mt-3 text-sm text-slate-600 dark:text-slate-300"><span class="font-semibold text-brand-ink dark:text-white">Peran saya:</span> <span id="project-modal-role"></span></p>
-          <p id="project-modal-description" class="mt-4 leading-7 text-slate-600 dark:text-slate-300"></p>
+          <div class="mt-5 space-y-4"><div><h3 class="font-semibold">Masalah</h3><p id="project-modal-problem" class="mt-1 leading-7 text-slate-600 dark:text-slate-300"></p></div><div><h3 class="font-semibold">Solusi</h3><p id="project-modal-solution" class="mt-1 leading-7 text-slate-600 dark:text-slate-300"></p></div><div><h3 class="font-semibold">Hasil</h3><p id="project-modal-result" class="mt-1 leading-7 text-slate-600 dark:text-slate-300"></p></div></div>
           <div id="project-modal-tech" class="mt-5 flex flex-wrap gap-2" aria-label="Teknologi proyek"></div>
           <div class="mt-7 flex flex-wrap gap-3">
             <a id="project-modal-github" class="btn-secondary" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github mr-2" aria-hidden="true"></i>Source Code</a>
