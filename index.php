@@ -184,22 +184,40 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
       </div>
     </section>
 
-    <section id="layanan" class="reveal scroll-mt-28 bg-white dark:bg-slate-900">
-      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <p class="eyebrow">Layanan</p><h2 class="section-title">Bantuan untuk <span>Bisnis Anda</span></h2><p class="section-description">Solusi website dan sistem web yang dirancang sesuai kebutuhan usaha.</p>
-        <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-          <?php $services = [
-            ['Website','Website company profile atau toko online yang rapi dan responsif.','fa-globe'],
-            ['Sistem Kasir & Stok','Aplikasi POS dan pencatatan stok untuk UMKM, mengurangi pencatatan manual.','fa-cash-register'],
-            ['Desain UI/UX','Rancangan tampilan di Figma sebelum dibangun, supaya hasil sesuai harapan.','fa-pen-ruler'],
-            ['Konsultasi','Bingung mulai dari mana? Ceritakan masalahmu, saya bantu mencari solusi yang paling masuk akal.','fa-comments'],
-          ]; foreach ($services as $i=>$service): ?>
-          <article class="card reveal" style="--i:<?= (int)$i ?>"><span class="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-blue-50 text-xl text-brand dark:bg-blue-900/30 dark:text-brand-light"><i class="fa-solid <?= e($service[2]) ?>" aria-hidden="true"></i></span><h3 class="mb-2 text-lg font-semibold"><?= e($service[0]) ?></h3><p class="text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($service[1]) ?></p></article>
-          <?php endforeach; ?>
+    <section id="about" class="reveal scroll-mt-24 bg-brand-pale dark:bg-slate-800 motion-reduce:transition-none">
+      <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
+        <img src="assets/images/poto-za.png" alt="<?= e($profile['name']) ?>" width="700" height="700" loading="lazy" class="mx-auto aspect-square w-[70vw] max-w-sm rounded-3xl object-cover shadow-xl md:w-full">
+        <div>
+          <h2 class="section-title mb-5 text-left">Tentang <span>Saya</span></h2>
+          <h3 class="text-xl font-semibold leading-relaxed md:text-2xl">Peserta Didik MAKN Ende | Jurusan PPLG | Calon Web Developer</h3>
+          <p class="mt-5 text-base leading-8 text-slate-700 dark:text-slate-300">Saya peserta didik MAKN Ende jurusan Pengembangan Perangkat Lunak dan Gim (PPLG) yang fokus pada pengembangan web. Saya telah membangun sistem stok dan penjualan untuk UMKM pakaian, aplikasi kasir POS Beauty sebagai tugas akhir kelas industri, serta merancang UI/UX website di Figma. Saat ini saya mencari kesempatan magang sebagai web developer untuk belajar dalam tim, menerima masukan, dan berkontribusi pada pekerjaan nyata.</p>
+          <div class="mt-5 flex flex-wrap gap-2" aria-label="Ringkasan profil"><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">5+ Proyek</span><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">PPLG MAKN Ende</span><span class="rounded-full bg-blue-50 px-4 py-1 text-sm text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">Siap Magang</span></div>
+          <div class="mt-6 flex flex-wrap gap-4"><a href="#keahlian" class="btn-primary focus-visible:ring-2 focus-visible:ring-blue-500">Lihat Keahlian</a><a href="assets/cv/cv-aziza-badu.pdf" class="btn-secondary focus-visible:ring-2 focus-visible:ring-blue-500" download><i class="fa-solid fa-download mr-2" aria-hidden="true"></i>Download CV</a></div>
         </div>
-        <div class="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl border border-blue-100 bg-blue-50/70 p-5 text-center dark:border-slate-800 dark:bg-slate-950 sm:flex-row sm:text-left"><p class="text-sm text-slate-700 dark:text-slate-300">Konsultasi awal gratis. Estimasi biaya dan waktu disesuaikan kebutuhan.</p><a href="#kontak" class="btn-primary shrink-0">Mulai Konsultasi</a></div>
+      </div>
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div id="education" class="card scroll-mt-24 reveal" style="--i:0"><h3 class="mb-5 text-2xl font-semibold">Pendidikan <span class="text-brand dark:text-brand-light">Saya</span></h3><div class="space-y-5">
+          <?php foreach ($education as $item): ?><article class="border-l-2 border-brand pl-4 dark:border-brand-light"><h4 class="font-semibold"><?= e($item['school']) ?></h4><?php if (!empty($item['major'])): ?><p class="mt-1 text-sm font-medium text-brand dark:text-brand-light"><?= e($item['major']) ?></p><?php endif; ?><p class="mt-1 text-sm text-slate-600 dark:text-slate-300"><?= e($item['start_year']) ?> – <?= e($item['end_year']) ?></p><p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300"><?= e($item['description'] ?? '') ?></p></article><?php endforeach; ?>
+        </div></div>
+        <div id="workflow" class="card scroll-mt-24 reveal" style="--i:1"><h3 class="mb-3 text-2xl font-semibold">Cara <span class="text-brand dark:text-brand-light">Kerja</span></h3><p class="mb-5 text-sm leading-6 text-slate-600 dark:text-slate-300">Setiap proyek saya kerjakan melalui langkah yang terarah agar kebutuhan jelas dan hasilnya sesuai tujuan.</p><div class="space-y-4">
+          <?php $workflowSteps = [
+            ['Diskusi','Memahami kebutuhan, tujuan, dan ruang lingkup proyek.','fa-comments'],
+            ['Riset & konsep','Mencari referensi dan menyusun arah solusi serta tampilan.','fa-lightbulb'],
+            ['Pengerjaan','Membangun desain atau website berdasarkan konsep yang disepakati.','fa-code'],
+            ['Revisi','Meninjau hasil dan menyempurnakannya dari masukan yang diberikan.','fa-pen-to-square'],
+            ['Serah terima','Menyerahkan hasil akhir beserta file atau aset proyek.','fa-circle-check'],
+          ]; foreach ($workflowSteps as $step): ?>
+          <div class="flex items-start gap-3"><i class="fa-solid <?= e($step[2]) ?> mt-1 text-brand dark:text-brand-light" aria-hidden="true"></i><p class="text-sm leading-6"><span class="font-semibold"><?= e($step[0]) ?>.</span> <?= e($step[1]) ?></p></div>
+          <?php endforeach; ?>
+        </div></div>
       </div>
     </section>
+
+    <section id="skills" class="reveal scroll-mt-24 bg-brand-pale dark:bg-slate-800"><span id="keahlian" class="block scroll-mt-24"></span><h2 class="section-title">Keahlian <span>Saya</span></h2><div class="mx-auto max-w-6xl space-y-10">
+      <?php foreach ($skillGroups as $category=>$groupSkills): if (!$groupSkills) continue; ?><div><h3 class="mb-4 text-xl font-semibold"><?= e($category) ?></h3><div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <?php foreach ($groupSkills as $i=>$skill): ?><article class="card reveal" style="--i:<?= (int)$i ?>"><div class="flex items-center gap-4"><i class="<?= e($skill['icon_class']) ?> text-3xl text-brand dark:text-brand-light" aria-hidden="true"></i><h4 class="font-semibold"><?= e($skill['name']) ?></h4></div></article><?php endforeach; ?>
+      </div></div><?php endforeach; ?>
+    </div></section>
 
     <section id="portfolio" class="reveal scroll-mt-24"><h2 class="section-title">Proyek <span>Pilihan</span></h2><div class="project-filters mb-8 flex flex-wrap justify-center gap-3" role="group" aria-label="Filter proyek"><button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">Semua</button><?php foreach ($categories as $key=>$label): ?><button class="filter-btn" type="button" data-filter="<?= e($key) ?>" aria-pressed="false"><?= e($label) ?></button><?php endforeach; ?></div>
       <div class="grid grid-cols-1 items-stretch gap-6 md:grid-cols-4 lg:grid-cols-6">
@@ -231,39 +249,6 @@ $categories = ['php'=>'PHP','java'=>'Java','design'=>'UI/UX'];
           <span class="flex flex-1 flex-col p-5"><span class="mb-3 flex flex-wrap items-center justify-between gap-2"><span class="rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand dark:bg-brand-light/15 dark:text-brand-light"><?= e($categories[$project['category']] ?? $project['category']) ?></span><?php if (!empty($project['is_featured'])): ?><span class="text-xs font-semibold text-amber-600"><i class="fa-solid fa-star mr-1" aria-hidden="true"></i>Unggulan</span><?php endif; ?></span><?php if ($project['category'] === 'java'): ?><span class="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Proyek Latihan</span><?php endif; ?><span class="block text-xl font-semibold text-brand-ink dark:text-white"><?= e($project['title']) ?></span><span class="mt-2 line-clamp-3 text-left text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($projectDescription) ?></span><span class="mt-4 flex flex-wrap gap-2" aria-label="Teknologi proyek"><?php foreach ($projectTech as $technology): ?><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-200"><?= e($technology) ?></span><?php endforeach; ?></span><span class="mt-auto flex items-center gap-2 pt-5 text-sm font-semibold text-brand dark:text-brand-light">Lihat detail <i class="fa-solid fa-arrow-right transition group-hover:translate-x-1" aria-hidden="true"></i></span></span>
         </button>
         <?php endforeach; ?>
-      </div>
-    </section>
-
-    <section id="about" class="reveal scroll-mt-28 bg-white dark:bg-slate-900 motion-reduce:transition-none">
-      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
-          <img src="assets/images/<?= e(basename((string)($profile['photo'] ?? 'zaza.png'))) ?>" alt="Foto Aziza Ony Badu, siswa PPLG MAKN Ende" width="700" height="700" loading="lazy" class="mx-auto aspect-square w-full max-w-sm rounded-3xl border-4 border-brand object-cover object-top shadow-xl md:max-w-md">
-          <div>
-            <p class="eyebrow text-left">Tentang</p><h2 class="section-title text-left">Tentang <span>Saya</span></h2>
-            <h3 class="text-lg font-semibold leading-relaxed text-slate-700 dark:text-slate-200 md:whitespace-nowrap">Siswa PPLG MAKN Ende · Web Developer</h3>
-            <p class="mt-5 text-base leading-8 text-slate-700 dark:text-slate-300">Saya siswa jurusan Pengembangan Perangkat Lunak dan Gim (PPLG) di MAKN Ende yang fokus pada pengembangan web. Saya sudah membangun sistem stok dan penjualan untuk UMKM pakaian di Flores Timur, aplikasi kasir POS Beauty sebagai tugas akhir kelas industri, serta merancang UI/UX website di Figma. Saya suka membantu pemilik usaha mengubah masalah sehari-hari menjadi sistem yang mudah dipakai.</p>
-            <div class="mt-6 flex flex-wrap gap-4"><a href="<?= e($profile['cv_url']) ?>" target="_blank" rel="noopener noreferrer" class="btn-secondary"><i class="fa-solid fa-download mr-2" aria-hidden="true"></i>Download CV</a><a href="#kontak" class="btn-primary">Konsultasi</a></div>
-          </div>
-        </div>
-        <div class="mt-12 grid grid-cols-1 items-start gap-6 md:grid-cols-3">
-          <div id="education" class="card scroll-mt-28 reveal"><h3 class="mb-6 text-xl font-semibold">Pendidikan</h3><div class="relative space-y-6 before:absolute before:bottom-2 before:left-[7px] before:top-2 before:w-0.5 before:bg-brand dark:before:bg-brand-light">
-            <?php foreach ($education as $item): ?><article class="relative pl-8"><span class="absolute left-0 top-1 h-4 w-4 rounded-full bg-brand ring-4 ring-white dark:bg-brand-light dark:ring-slate-900" aria-hidden="true"></span><h4 class="font-semibold"><?= e($item['school']) ?></h4><?php if (!empty($item['major'])): ?><p class="mt-1 text-sm font-medium text-brand dark:text-brand-light"><?= e($item['major']) ?></p><?php endif; ?><p class="mt-1 text-sm text-slate-600 dark:text-slate-300"><?= e($item['start_year']) ?> – <?= e($item['end_year']) ?></p><p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300"><?= e($item['description'] ?? '') ?></p></article><?php endforeach; ?>
-          </div></div>
-          <div id="skills" class="card scroll-mt-28 reveal"><h3 class="mb-5 text-xl font-semibold">Keahlian</h3><div class="space-y-5">
-            <?php foreach ($skillGroups as $category=>$groupSkills): if (!$groupSkills) continue; $categoryLabel = $category === 'CMS/Framework' ? 'Framework/CMS' : $category; ?><div><h4 class="mb-2 text-sm font-semibold text-slate-600 dark:text-slate-300"><?= e($categoryLabel) ?></h4><div class="flex flex-wrap gap-2"><?php foreach ($groupSkills as $skill): ?><span class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"><i class="<?= e($skill['icon_class']) ?>" aria-hidden="true"></i><?= e($skill['name']) ?></span><?php endforeach; ?></div></div><?php endforeach; ?>
-          </div></div>
-          <div id="workflow" class="card scroll-mt-28 reveal"><h3 class="mb-2 text-xl font-semibold">Cara Saya Bekerja</h3><p class="mb-5 text-sm leading-6 text-slate-600 dark:text-slate-300">Setiap proyek saya kerjakan melalui langkah yang terarah agar kebutuhan jelas dan hasilnya sesuai tujuan.</p><div class="space-y-4">
-            <?php $workflowSteps = [
-              ['Diskusi','Memahami kebutuhan, tujuan, dan ruang lingkup proyek.'],
-              ['Riset & Konsep','Mencari referensi dan menyusun arah solusi serta tampilan.'],
-              ['Pengerjaan','Membangun desain atau website berdasarkan konsep yang disepakati.'],
-              ['Revisi','Meninjau hasil dan menyempurnakannya dari masukan yang diberikan.'],
-              ['Serah Terima','Menyerahkan hasil akhir beserta file atau aset proyek.'],
-            ]; foreach ($workflowSteps as $i=>$step): ?>
-            <div class="flex items-start gap-3"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"><?= (int)$i + 1 ?></span><p class="pt-1 text-sm leading-6"><span class="font-semibold"><?= e($step[0]) ?></span> — <?= e($step[1]) ?></p></div>
-            <?php endforeach; ?>
-          </div><p class="mt-5 border-t border-slate-200 pt-4 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:text-slate-300">[ISI: misalnya bantuan perbaikan kecil setelah serah terima]</p></div>
-        </div>
       </div>
     </section>
 
